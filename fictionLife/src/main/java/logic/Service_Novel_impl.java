@@ -50,6 +50,7 @@ public class Service_Novel_impl implements Service_Novel {
 
 	public void insertEpi(Novel_board novel_board) {
 		nv.insertEpi(novel_board);
+		nv.addEpi(novel_board.getNovel_id());
 	}
 
 	public Integer maxEpiBno() {

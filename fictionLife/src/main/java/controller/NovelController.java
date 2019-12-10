@@ -175,41 +175,39 @@ public class NovelController {
 //	}
 //	
 //	
-//	@RequestMapping(value="/novel/regiEpi.html")
-//	public ModelAndView regiEpi(Novel_board novel_board, BindingResult br, String finish) {
-//		ModelAndView mav = new ModelAndView("main");
-//		Novel_board newEpi = novel_board;
-//		if(newEpi.getEpi_title().equals("")) {
-//			FieldError fe = new FieldError("episodeForm.jsp", "epi_title", "에피소드 제목을 입력해주세요");
-//			br.addError(fe);		
-//			mav.addObject("BODY", "episodeForm.jsp");
-//			return mav;
-//		}
-//		if(newEpi.getContent().equals("")) {
-//			FieldError fe = new FieldError("episodeForm.jsp", "content", "내용을 입력해주세요");
-//			br.addError(fe);		
-//			mav.addObject("BODY", "episodeForm.jsp");
-//			return mav;
-//		}
-//
-//		Integer maxBno = sn.maxEpiBno();
-//		if(maxBno==null)maxBno=0;
-//		System.out.println("maxBno:["+maxBno+"]");
-//		newEpi.setBno(maxBno+1);
-//			
-//		sn.insertEpi(newEpi);
-//		sn.addEpi(newEpi.getNovel_id());
-//		
-//		if(finish.equals("finish")) {//완결처리 버튼을 누른 경우
-//			sn.novelFinish(newEpi.getNovel_id());
-//		}
-//		
-//		
-//		mav.addObject("novelId", newEpi.getNovel_id());
-//		mav.setViewName("regiEpiResult");
-//		return mav;
-//		
-//	}
+	@RequestMapping(value="/novel/regiEpi.html")
+	public ModelAndView regiEpi(Novel_board novel_board, BindingResult br, String finish) {
+		ModelAndView mav = new ModelAndView("main");
+		Novel_board newEpi = novel_board;
+		if(newEpi.getEpi_title().equals("")) {
+			FieldError fe = new FieldError("episodeForm.jsp", "epi_title", "에피소드 제목을 입력해주세요");
+			br.addError(fe);		
+			mav.addObject("BODY", "episodeForm.jsp");
+			return mav;
+		}
+		if(newEpi.getContent().equals("")) {
+			FieldError fe = new FieldError("episodeForm.jsp", "content", "내용을 입력해주세요");
+			br.addError(fe);		
+			mav.addObject("BODY", "episodeForm.jsp");
+			return mav;
+		}
+
+		
+		
+			
+		sn.insertEpi(newEpi);
+		
+		
+		if(finish.equals("finish")) {//완결처리 버튼을 누른 경우
+			sn.novelFinish(newEpi.getNovel_id());
+		}
+		
+		
+		mav.addObject("novelId", newEpi.getNovel_id());
+		mav.setViewName("regiEpiResult");
+		return mav;
+		
+	}
 //	
 //	
 //	

@@ -30,6 +30,59 @@ values(#{title}, 0, #{email},  'no', #{image},  'no', #{description}, #{type}, 0
 
 </insert>
 
+<!-- 에피소드 갯수구하기 (시리즈뷰) -->
+<select id="getEpiCount" resultType="Integer">
+select max(epi_number)  from novel_board where novel_id = #{value}
+</select>
+
+<!-- 에피소드 리스트 가져오기 -->
+<select id="getEpiList" resultType="model.Novel_board">
+SELECT * FROM novel_board WHERE novel_id =#{id} LIMIT #{startRow}, #{endRow};
+</select>
+
+<!-- 작품ID로 작품찾아오기 -->
+<select id="findParentNovel" resultType="model.Novel">
+
+select * from novel where id = #{value}
+</select>
+
+<!-- 해당 작품이 완결인지 -->
+<select id="thisNovelFinished" resultType="Integer">
+select count(*) from novel where id=#{value} and finish ='yes'
+</select>
+
+<!-- 에피소드등록 -->
+<insert id="insertEpi">
+insert into novel_board (epi_title, view_cnt, reco_cnt, repl_cnt, blind, novel_id, epi_number, content)
+values(#{epi_title}, 0, 0, 0, 'no', #{novel_id}, #{epi_number}, #{content})
+</insert>
+
+<!-- novel의 에피소드 갯수 1증가 -->
+<update id="addEpi">
+update novel set episode = episode + 1, epi_regi_date = now()
+where id = #{value}
+</update>
+
+<!-- 에피소드 내용 불러우기 -->
+<select id="getEpiContent" resultType="model.Novel_board">
+select * from novel_board where epi_number = #{epi_number} and novel_id = #{novel_id}
+</select>
+
+<!-- 조회수 1 증가 -->
+<update id="plusViewCnt">
+update novel_board set view_cnt = view_cnt+1 where bno = #{value}
+</update>
+
+<!-- 메인화면 모든 노벨 찾아오기 -->
+<select id="findAllNovel" resultType="model.Novel">
+
+
+select * from novel 
+where  blind = 'no' and episode != 0 and email in
+(select email from member where blind='no') order by epi_regi_date desc 
+LIMIT #{startRow} , #{endRow}
+
+</select>
 </mapper>
 
 

@@ -12,6 +12,6 @@ public void updateReaders(User_rank ur);
 public void AddR_point(String Email);
 public void AddW_point(String Email);
 public void AddW_point5(String Email);
-public String getW_icon_ImageByNickname(String nickname);
+public String getW_icon_ImageByEmail(String email);
 public String getR_icon_ImageByNickname(String nickname);
 }

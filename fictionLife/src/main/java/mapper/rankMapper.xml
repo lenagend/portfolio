@@ -22,6 +22,16 @@ select * from user_rank where email=#{value}
 <update id="updateReaders">
 update user_rank set r_icon_id = #{r_icon_id}, w_icon_id = #{w_icon_id}, reco_point =#{reco_point} where email=#{email}
 </update>
+
+<!-- 닉네임으로  -->
+<select id="getW_icon_ImageByEmail" resultType="String">
+SELECT icon_image from icon 
+where icon_id = (
+select w_icon_id from user_rank 
+where email=#{email}
+
+)
+</select>
 </mapper>
 
 

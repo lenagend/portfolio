@@ -27,9 +27,15 @@ public class Novel {
 	private Integer episode;
 	private String type;
 	private String epi_regi_date;
-	private String nickname;
-	
 	private String w_icon_image;
+	
+	private Member member;
+	public Member getMember() {
+		return member;
+	}
+	public void setMember(Member member) {
+		this.member = member;
+	}
 	
 	public String getW_icon_image() {
 		return w_icon_image;
@@ -46,15 +52,7 @@ public class Novel {
 	public void setFavorite_num(Integer favorite_num) {
 		this.favorite_num = favorite_num;
 	}
-	
-	public String getNickname() {
-		return nickname;
-	}
-	
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-	
+
 	
 	public void setEpi_regi_date(String epi_regi_date) {
 		this.epi_regi_date = epi_regi_date;

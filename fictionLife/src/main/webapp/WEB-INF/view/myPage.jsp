@@ -274,7 +274,7 @@ color: #cc0000;
 							<td><span class="Text_type">장르 : ${cnt.type }</span></td>
 						</tr>
 						<tr>
-							<td><a href="../home/loadEpisodeForm.html?novelId=${cnt.id }&novelTitle=${cnt.title}">#연재하러 가기</a>
+							<td><a href="../home/loadEpisodeForm.html?novelId=${cnt.id }">#연재하러 가기</a>
 								
 							</td>
 							<td style="color: gray; font-size: 70%;">${cnt.regi_date }</td>

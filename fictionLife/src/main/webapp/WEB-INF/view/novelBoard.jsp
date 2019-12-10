@@ -88,9 +88,9 @@ location.replace("../home/goMain.html");
 							<td>
 								<img alt="" src="../rank_icon/${cnt.w_icon_image}" width="16" height="16">
 							
-								${cnt.nickname } 작가님
+								${cnt.member.nickname } 작가님
 								<c:if test="${ADMIN == LOGINMEMBER.nickname }">
-									<a href="../admin/userBlind.html?nickname=${cnt.nickname}"> 블라인드</a>
+									<a href="../admin/userBlind.html?nickname=${cnt.member.nickname}"> 블라인드</a>
 								</c:if>
 								 &nbsp;<span id="Text_upload">${cnt.episode }화 업로드!!</span>
 								&nbsp;<img alt="" src="../cssImage/star.png" width="16" height="16">${cnt.favorite_num } 

@@ -95,14 +95,14 @@
 	
 	<form:form id="regiForm" modelAttribute="novel_board" method="post" action="../novel/regiEpi.html">
 	<div id="loginFormDiv">
-	<form:hidden path="novel_id" value="${novelId }"/>
+	<form:hidden path="novel_id" value="${novel.id }"/>
 	
 		<table>
 			<tr>	
-				<td style="color: #cc0000;">작품 제목:<input type="text" class="input" value="${novelTitle }" readonly="readonly"></td>
+				<td style="color: #cc0000;">작품 제목:<input type="text" class="input" value="${novel.title }" readonly="readonly"></td>
 			</tr>
 			<tr>	
-				<td style="color: #cc0000;">회차:<form:input class="input" path="epi_number" value="${epinum }" readonly="true"/></td>
+				<td style="color: #cc0000;">회차:<form:input class="input" path="epi_number" value="${novel.episode +1 }" readonly="true"/></td>
 			</tr>
 			<tr>	
 				<td><font color="#cc0000">에피소드 제목:</font><form:input class="input" path="epi_title"/></td>
@@ -132,12 +132,7 @@
 		<br/>
 		<input type="submit" class="button" value="등록">
 	</form:form>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	
+
 	<script type="text/javascript">
 	function finish(){
 	

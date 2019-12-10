@@ -260,9 +260,9 @@ public class Service_Member_Impl implements Service_Member {
 		return rankDao.getR_icon_ImageByNickname(nickname);
 	}
 
-	public String getW_icon_ImageByNickname(String nickname) {
+	public String getW_icon_ImageByEmail(String email) {
 
-		return rankDao.getW_icon_ImageByNickname(nickname);
+		return rankDao.getW_icon_ImageByEmail(email);
 	}
 
 	public void modifyMember(Member member) {

@@ -13,10 +13,7 @@
 #seriesList{
    		width:510px;
 	    height:100%;
-	    
-	    margin-bottom: 10%;
-  		
-  		padding-bottom: none;
+	   	padding-bottom: none;
   		font-family: "Nanum Gothic", arial, helvetica, sans-serif;
   		background-repeat: no-repeat;
   		
@@ -65,7 +62,7 @@ font-size: 300%;
 		<br/>	
 		
 		<div id="seriesList">
-<%-- 		<c:if test="${parentNovel.finish =='yes' }">완결!!!</c:if> --%>
+
 		<div align="center" style="margin-bottom: 10%; margin-top: 5%;">
 		<table >
 			<tr bordercolor="black">
@@ -84,7 +81,7 @@ font-size: 300%;
 		<table>
 			<tr>
 				<td><c:if test="${currentPage > 1 }">
-						<a href="../home/loadSeries.html?pageNo=${currentPage -1 }&novelId=${novelId }"><img alt="" src="../cssImage/prev.png" width="32" height="32"></a>
+						<a href="../home/loadSeries.html?pageNo=${currentPage -1 }&novelId=${parentNovel.id }"><img alt="" src="../cssImage/prev.png" width="32" height="32"></a>
 					</c:if></td>
 				<td>
 					<table>
@@ -94,7 +91,7 @@ font-size: 300%;
 
 							<tr>
 								<td>${epi.epi_number }화-</td>
-								<td><font size="6"><a href="../home/loadReader.html?epi_number=${epi.epi_number }&pni=${parentNovel.id}&bno=${epi.bno}">${epi.epi_title }</a></font></td>
+								<td><font size="6"><a href="../home/loadReader.html?epi_number=${epi.epi_number }&bno=${epi.bno}">${epi.epi_title }</a></font></td>
 								<td><img alt="" src="../cssImage/view.jpg" width="16" height="16"> ${epi.view_cnt } </td>
 								<td><img alt="" src="../cssImage/likey.png" width="16" height="16">${epi.reco_cnt } </td>
 								<td><img alt="" src="../cssImage/comment.png" width="16" height="16">${epi.repl_cnt }</td>
@@ -106,7 +103,7 @@ font-size: 300%;
 					</table>
 				</td>
 				<td><c:if test="${currentPage < pageCount }">
-						<a href="../home/loadSeries.html?pageNo=${currentPage +1 }&novelId=${novelId }"><img alt="" src="../cssImage/next.png" width="32" height="32"></a>
+						<a href="../home/loadSeries.html?pageNo=${currentPage +1 }&novelId=${parentNovel.id }"><img alt="" src="../cssImage/next.png" width="32" height="32"></a>
 					</c:if></td>
 			</tr>
 		</table>
@@ -115,19 +112,19 @@ font-size: 300%;
 		<br/>
 
 <c:if test="${startPage > 10 }">
-<a href="../home/loadSeries.html?pageNo=${startPage -1 }&novelId=${novelId }">[10전]</a>
+<a href="../home/loadSeries.html?pageNo=${startPage -1 }&novelId=${parentNovel.id }">[10전]</a>
 </c:if>
 
 <c:forEach var="pageNo" begin="${startPage}" 
 						end="${endPage }">
 	<c:if test="${pageNo == currentPage }">
 		<font size="110%">
-		<a href="../home/loadSeries.html?pageNo=${pageNo }&novelId=${novelId }">${pageNo }</a>
+		<a href="../home/loadSeries.html?pageNo=${pageNo }&novelId=${parentNovel.id }">${pageNo }</a>
 		</font>
 	</c:if>
 	
 	<c:if test="${pageNo != currentPage }">
-		<a href="../home/loadSeries.html?pageNo=${pageNo }&novelId=${novelId }">${pageNo }</a>
+		<a href="../home/loadSeries.html?pageNo=${pageNo }&novelId=${parentNovel.id }">${pageNo }</a>
 	</c:if>
 </c:forEach>
 
@@ -135,24 +132,16 @@ font-size: 300%;
 
 
 <c:if test="${endPage < pageCount }">
-<a href="../home/loadSeries.html?pageNo=${endPage +1 }&novelId=${novelId }">[10후]</a>
+<a href="../home/loadSeries.html?pageNo=${endPage +1 }&novelId=${parentNovel.id }">[10후]</a>
 </c:if>
 
 
-<a href="../home/loadSeries.html?pageNo=${pageCount}&novelId=${novelId }">[마지막]</a>
+<a href="../home/loadSeries.html?pageNo=${pageCount}&novelId=${parentNovel.id }">[마지막]</a>
 
-<br/>
-<br/>
 
-<script type="text/javascript">
-function goNovel_board() {
-	var url = '${redirectURI}';
-	location.replace(url);
-}
-</script>
 </div>
 </c:if>
-<a href="#" onclick="goNovel_board();"><span style="font-size: 200%;">#목록으로</span></a>
+
 
 </body>
 </html>

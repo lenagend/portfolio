@@ -24,6 +24,8 @@ import model.Novel;
 import model.Novel_board;
 import model.Reply_novel;
 
+//1210 저녁 11시 2분 수정
+
 @Controller
 public class HomeController {
 	@Autowired
@@ -56,70 +58,45 @@ public class HomeController {
 			cnt = sn.countNovelList();
 		
 		}
-//
-//
-//		if (cnt == null)
-//			cnt = 0;
-//
-//		int startRow = 0;
-//		int endRow = 0;
-//		int pageCnt = 0;
-//		int currentPage = 0;
-//
-//		if (pageNo == null)
-//			currentPage = 1;
-//		else
-//			currentPage = pageNo;
-//
-//		if (cnt > 0) {
-//			pageCnt = cnt / 5;
-//			if (cnt % 5 > 0)
-//				pageCnt++;
-//			startRow = (currentPage - 1) * 5 + 1;
-//			endRow = currentPage * 5;
-//
-//			if (endRow > cnt)
-//				endRow = cnt;
-//
-//		}
-//		PagingCondition c = new PagingCondition();
-//		c.setStartRow(startRow);
-//		c.setEndRow(endRow);
-//
-//		List<Novel> allNovelList;
-//
-//		if(novelType!=null) {
-//			c.setType(novelType);
-//			allNovelList = sn.findNovelByType(c);
-//			
-//		}else if(search!=null) {
-//			c.setSearch(search);
-//			allNovelList = sn.getSearchNovel(c);
-//			if(allNovelList.isEmpty()) {
-//				mav.addObject("searchResult", "noResult");
-//			}
-//			
-//			
-//			}
-//		
-//		else {
-//			allNovelList = sn.findAllNovel(c);
-//		}
-//		
-//		//각 닉네임으로 아이콘을 찾아와야한다...
-//		if(allNovelList != null) {
-//			Iterator it = allNovelList.iterator();
-//			int i = 0;
-//			while(it.hasNext()) {
-//				Novel ci =(Novel)it.next();
-//				String w_icon_image= sm.getW_icon_ImageByNickname(ci.getNickname());  
-//				
-//				ci.setW_icon_image(w_icon_image);
-//				i++;
-//			}
-//			
-//			
-//		}
+
+		PagingCondition c = new PagingCondition();
+		c.paging(cnt, pageNo, 5);
+
+		List<Novel> allNovelList;
+
+		if(novelType!=null) {
+			c.setType(novelType);
+			allNovelList = sn.findNovelByType(c);
+			
+		}else if(search!=null) {
+			c.setSearch(search);
+			allNovelList = sn.getSearchNovel(c);
+			if(allNovelList.isEmpty()) {
+				mav.addObject("searchResult", "noResult");
+			}
+			
+			
+			}
+		
+		else {
+			allNovelList = sn.findAllNovel(c);
+		}
+		
+		//각 닉네임으로 아이콘을 찾아와야한다...
+		if(allNovelList != null) {
+			Iterator it = allNovelList.iterator();
+			int i = 0;
+			while(it.hasNext()) {
+				Novel ci =(Novel)it.next();
+				ci.setMember(sm.checkEmail(ci.getEmail()));
+				String w_icon_image= sm.getW_icon_ImageByEmail(ci.getEmail());  
+				
+				ci.setW_icon_image(w_icon_image);
+				i++;
+			}
+			
+			
+		}
 //		
 //		
 //		
@@ -141,23 +118,14 @@ public class HomeController {
 //		List<Notice_board> noticeList = sa.getLatestNotice();
 //		mav.addObject("NOTICE_LIST", noticeList);
 //		
-//		mav.addObject("NOVEL_LIST", allNovelList);
-//		mav.addObject("COUNT", cnt);
-//		
-//		mav.addObject("pageCount", pageCnt);
-//		System.out.println("cnt: "+ cnt);
-//		System.out.println("cnt: "+ cnt);System.out.println("cnt: "+ cnt);System.out.println("cnt: "+ cnt);System.out.println("cnt: "+ cnt);System.out.println("cnt: "+ cnt);
-//		System.out.println("pageCnt: "+ pageCnt);
-//		System.out.println("pageCnt: "+ pageCnt);
-//		System.out.println("pageCnt: "+ pageCnt);
-//		System.out.println("pageCnt: "+ pageCnt);
-//		
-//		
-//		mav.addObject("startRow", startRow);
-//		mav.addObject("endRow", endRow);
-//		mav.addObject("currentPage", currentPage);
+		mav.addObject("NOVEL_LIST", allNovelList);
+		mav.addObject("COUNT", cnt);
+		mav.addObject("pageCount", c.getPageCnt());
+		mav.addObject("startRow",c.getStartRow());
+		mav.addObject("endRow",c.getEndRow());
+		mav.addObject("currentPage",c.getCurrentPage());
 		mav.addObject("BODY", null);
-//		mav.addObject("BOARD", "novelBoard.jsp");
+		mav.addObject("BOARD", "novelBoard.jsp");
 
 		return mav;
 	}
@@ -337,96 +305,77 @@ public class HomeController {
 //		mav.addObject("deleteNovelid", novelId);
 //		return mav;
 //	}
-//	@RequestMapping(value="/home/loadEpisodeForm.html")
-//	public ModelAndView loadEpiForm(Integer novelId, String novelTitle, HttpSession session) {
-//		
-//		if(sn.thisNovelFinished(novelId)>0) {
-//			//만약 이작품이 완결났으면
-//			ModelAndView mav = new ModelAndView("finishedResult");
-//			mav.addObject("result", "1");
-//			return mav;
-//		}
-//		
-//		
-//		
-//		
-//		ModelAndView mav = new ModelAndView("main");
-//		Integer epinum = sn.maxEpiNum(novelId);
-//		if(epinum==null)epinum=0;
-//		mav.addObject("BODY", "episodeForm.jsp");
-//		session.setAttribute("epinum", epinum+1);
-//		session.setAttribute("novelId", novelId);
-//		session.setAttribute("novelTitle", novelTitle);
-//		mav.addObject(new Novel_board());
-//		return mav;
-//	}
-//	
-//	@RequestMapping(value="/home/loadSeries.html")
-//	public ModelAndView loadSeries(Integer novelId, Integer pageNo, HttpServletRequest request) {
-//		String referer = request.getHeader("Referer");
-//		request.getSession().setAttribute("redirectURI", referer);	
-//		
-//		ModelAndView mav = new ModelAndView("main");
-//	
-//		
-//		//
-//		Integer cnt = sn.getEpiCount(novelId);
-//		if(cnt==null) cnt=0;
-//		int startRow = 0; int endRow=0;int pageCnt=0;
-//		int currentPage=0;
-//		
-//		if(pageNo==null) currentPage =1;
-//		else currentPage = pageNo;
-//		
-//		if(cnt>0) {
-//			pageCnt = cnt/5;
-//			if(cnt % 5>0) pageCnt++;
-//			startRow = (currentPage-1)*5 +1;
-//			endRow = currentPage * 5;
-//			
-//			if(endRow > cnt) endRow = cnt;
-//			
-//		}
-//		PagingCondition c = new PagingCondition();
-//		c.setStartRow(startRow); c.setEndRow(endRow);c.setId(novelId);
-//		List<Novel_board> epiList=sn.getEpiList(c);
-//		Novel parentNovel = sn.findParentNovel(novelId);
-//		
-//		
-//		
-//		mav.addObject("novelId", novelId);
-//		mav.addObject("parentNovel", parentNovel);
-//		mav.addObject("EPI_LIST", epiList);
-//		mav.addObject("COUNT", cnt);
-//		mav.addObject("pageCount",pageCnt);
-//		mav.addObject("startRow",startRow);
-//		mav.addObject("endRow",endRow);
-//		mav.addObject("currentPage",currentPage);
-//		mav.addObject("BODY", "seriesView.jsp");
-//
-//		return mav;
-//
-//	}
-//	@RequestMapping(value="/home/loadReader.html")
-//	public ModelAndView loadReader(Integer epi_number, 
-//			Integer pni, Integer bno, Integer pageNo, HttpServletRequest request) {
-//		String referer = request.getHeader("Referer");
-//		request.getSession().setAttribute("redirectURI", referer);	
-//		
-//		
-//		Novel_board nb = new Novel_board();
-//		nb.setEpi_number(epi_number);
-//		nb.setNovel_id(pni);
-//		
-//		nb=  sn.getEpiContent(nb);
-//		
-//		ModelAndView mav = new ModelAndView("main");
-//		Novel parentNovel = sn.findParentNovel(pni);
-//		
-//		//조회수 1추가
-//		sn.plusViewCnt(bno);
-//		
-//		
+	@RequestMapping(value="/home/loadEpisodeForm.html")
+	public ModelAndView loadEpiForm(Integer novelId) {
+		
+		if(sn.thisNovelFinished(novelId)>0) {
+			//만약 이작품이 완결났으면
+			ModelAndView mav = new ModelAndView("finishedResult");
+			mav.addObject("result", "1");
+			return mav;
+		}
+			
+		
+		ModelAndView mav = new ModelAndView("main");
+		Novel novel =sn.findParentNovel(novelId);
+		
+		mav.addObject("BODY", "episodeForm.jsp");
+		mav.addObject("novel", novel);
+		mav.addObject(new Novel_board());
+		return mav;
+	}
+	
+	@RequestMapping(value="/home/loadSeries.html")
+	public ModelAndView loadSeries(Integer novelId, Integer pageNo, HttpSession session) {
+		
+		
+		ModelAndView mav = new ModelAndView("main");
+	
+		
+		//
+		Integer cnt = sn.getEpiCount(novelId);
+
+		PagingCondition c = new PagingCondition();
+	    c.setId(novelId);
+	    c.paging(cnt, pageNo, 3);
+		List<Novel_board> epiList=sn.getEpiList(c);
+		Novel parentNovel = sn.findParentNovel(novelId);
+		
+		
+		
+		
+		session.setAttribute("parentNovel", parentNovel);
+		mav.addObject("EPI_LIST", epiList);
+		mav.addObject("COUNT", cnt);
+		mav.addObject("pageCount",c.getPageCnt());
+		mav.addObject("startRow",c.getStartRow());
+		mav.addObject("endRow",c.getEndRow());
+		mav.addObject("currentPage",c.getCurrentPage());
+		mav.addObject("BODY", "seriesView.jsp");
+
+		return mav;
+
+	}
+	@RequestMapping(value="/home/loadReader.html")
+	public ModelAndView loadReader(Integer epi_number, 
+			Integer bno, Integer pageNo, HttpSession session) {
+	
+		
+		
+		Novel_board nb = new Novel_board();
+		Novel parentNovel = (Novel)session.getAttribute("parentNovel");
+		nb.setEpi_number(epi_number);
+		nb.setNovel_id(parentNovel.getId());
+		
+		nb=  sn.getEpiContent(nb);
+		
+		ModelAndView mav = new ModelAndView("main");
+		
+		
+		//조회수 1추가
+		sn.plusViewCnt(bno);
+		
+		
 //		//댓글 불러오기
 //
 //		Integer cnt = sn.countReplyByBno(bno);
@@ -499,15 +448,15 @@ public class HomeController {
 //		mav.addObject("startRow",startRow);
 //		mav.addObject("endRow",endRow);
 //		mav.addObject("currentPage",currentPage);
-//		
-//		mav.addObject("parentNovel", parentNovel);
-//		mav.addObject("EPISODE", nb);
-//		mav.addObject("BODY", "reader.jsp");
-//		
-//		//답글 갯수
-//		
-//		return mav;
-//	};
+		
+		mav.addObject("parentNovel", parentNovel);
+		mav.addObject("EPISODE", nb);
+		mav.addObject("BODY", "reader.jsp");
+		
+		//답글 갯수
+		
+		return mav;
+	};
 //	
 //	@RequestMapping(value="/novel/loadModifyEpiForm.html")
 //	public ModelAndView modifyEpi(Integer epiNumber, Integer parentNovelId) {
