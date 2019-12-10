@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.loginMapper">
+<select id="emailCheck" resultType="model.Member"><!--기본키인 이메일이 이미 등록된 것인지 확인 -->
+select * from member where email = #{value}
+</select>
+<!-- 회원가입 -->
+<!-- 닉네임중복확인 -->
+<select id="nicknameCheck" resultType="Integer">
+select count(*) cnt from member where nickname = #{value}
+</select>
+
+<!-- 계정찾기 전화번호로 -->
+<select id="findEmail" resultType="model.Member">
+select * from member where phone=#{value}
+</select>
+
+<!-- 회원가입시 정보를 인설트 -->
+<insert id="register">
+	insert into member (email, nickname,phone, password, blind)
+	 values(#{email},#{nickname},#{phone},#{password}, #{blind})
+</insert>
+
+
+<!-- 로그인 -->
+<!-- 로그인시 아이디 패스워드로 맞는지 보는것 -->
+<select id="login" resultType="model.Member">
+	select * from member where email = #{email} and password = #{password}
+</select>
+<!-- 혹시관리자인지 -->
+<select id="adminLogin" resultType="Integer">
+select count(*) from admin where email=#{email}
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
