@@ -68,7 +68,7 @@ public class NovelController {
 				fileName=multiFile.getOriginalFilename();
 				if(! fileName.equals("")) {
 				ServletContext ctx=session.getServletContext();
-				path=ctx.getRealPath("/upload/"+fileName);
+				path=ctx.getRealPath("/home/hosting_users/lenagend/www/"+fileName);
 				System.out.println("업로드경로:"+path);
 				try {
 					os=new FileOutputStream(path);
