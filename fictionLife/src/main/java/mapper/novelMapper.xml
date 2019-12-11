@@ -83,6 +83,35 @@ where  blind = 'no' and episode != 0 and email in
 LIMIT #{startRow} , #{endRow}
 
 </select>
+<!-- 검색한것수량 -->
+<select id="countSearchNovel" resultType="Integer">
+
+
+select count(*) from novel where blind='no' and episode !=0 and title like CONCAT('%',#{search},'%') 
+</select>
+<!-- 검색한 작품 가져오기 -->
+<select id="getSearchNovel" resultType="model.Novel">
+select * from novel where  blind = 'no' and episode != 0 and email in(select email from member where blind='no') 
+	and  title like CONCAT('%',#{search},'%') 	
+order by epi_regi_date DESC
+LIMIT #{startRow} , #{endRow}
+
+</select>
+
+<!--해당 장르 수량 -->
+<select id="countTypeNovelList" resultType="Integer">
+select count(*) from novel where blind = 'no' and episode != 0 and type=#{type}
+</select>
+
+
+<!-- 장르별로 정렬하는 기능  -->
+<select id="findNovelByType" resultType="model.Novel">
+select * from novel where  blind = 'no' and episode != 0 and email in(select email from member where blind='no') 
+	and type=#{type}	
+order by epi_regi_date DESC
+LIMIT #{startRow} , #{endRow}
+
+</select>
 </mapper>
 
 

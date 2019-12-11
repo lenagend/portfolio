@@ -55,7 +55,7 @@ font-size: 300%;
 		<a href="../novel/favorite.html?novelId=${parentNovel.id }&writer=${parentNovel.email}">선호작 등록</a>
 		</c:if>
 		<br/>
-		글 : <strong>${parentNovel.nickname }</strong><br/>
+		글 : <strong>${parentNovel.member.nickname }</strong><br/>
 		총 회차: <strong> ${parentNovel.episode }</strong>회 
 		</div>
 		</div>

@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,10 +17,8 @@ import logic.Service_Admin;
 import logic.Service_Member;
 import logic.Service_Novel;
 import model.Member;
-import model.Notice_board;
 import model.Novel;
 import model.Novel_board;
-import model.Reply_novel;
 
 //1210 저녁 11시 2분 수정
 
@@ -340,7 +336,7 @@ public class HomeController {
 	    c.paging(cnt, pageNo, 3);
 		List<Novel_board> epiList=sn.getEpiList(c);
 		Novel parentNovel = sn.findParentNovel(novelId);
-		
+		parentNovel.setMember(sm.checkEmail(parentNovel.getEmail()));
 		
 		
 		
