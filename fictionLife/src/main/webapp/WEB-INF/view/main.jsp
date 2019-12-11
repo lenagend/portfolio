@@ -77,8 +77,8 @@ color black;
 </head>
 
 <body>
-
-
+<%String path = request.getSession().getServletContext().getRealPath("/");%>
+<%=path %>
 	
 	<div data-role="page">	
 		<div data-role="header"> <!-- 로고, 로그인 메뉴 -->
