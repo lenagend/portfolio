@@ -190,6 +190,15 @@ update novel set blind='yes' where id = #{id}
 <select id="likeyCheck" resultType="Integer">
 select count(*) from likey where likey_bno = ${likey_bno} and email = #{email}
 </select>
+
+<insert id="likey">
+insert into likey (likey_bno, email)
+values(#{likey_bno}, #{email})
+</insert>
+
+<update id="addLikey">
+update novel_board set reco_cnt = reco_cnt+#{reco_point} where bno=#{bno}
+</update>
 </mapper>
 
 

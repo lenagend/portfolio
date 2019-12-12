@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -66,7 +67,7 @@ public class NovelController {
 				fileName=multiFile.getOriginalFilename();
 				if(! fileName.equals("")) {
 				ServletContext ctx=session.getServletContext();
-				path=ctx.getRealPath("../../"+fileName);
+				path=ctx.getRealPath("/home/hosting_users/lenagend/www/"+fileName);
 				System.out.println("업로드경로:"+path);
 				try {
 					os=new FileOutputStream(path);
@@ -343,27 +344,45 @@ public class NovelController {
 		
 	}
 	
-	@RequestMapping(value="/novel/likey2.html")
-	public ModelAndView ajaxLikey(HttpSession session) {
-		Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
+	@RequestMapping(value = "/novel/ajaxLikey.html")
+	@ResponseBody
+	public String ajaxLikey(HttpSession session, String bno, String email) {
+		System.out.println("옴??");System.out.println("옴??");System.out.println("옴??");System.out.println("옴??");
+		Member loginMember = (Member) session.getAttribute("LOGINMEMBER");
+		Integer likey_bno = Integer.parseInt(bno);
 		Likey l = new Likey();
 		l.setEmail(loginMember.getEmail());
 		l.setLikey_bno(likey_bno);
 		Integer likeyAlready = sn.likeyCheck(l);
-		if(likeyAlready==0) {
-			
-			Integer seqno = sn.maxLikeySeqno();
-			if(seqno==null)seqno=0;
-			
-			l.setSeqno(seqno+1);
-			
-			sn.likey(l);
-		
-		
-	}
-		return null;
-}
+		String result;
+		if (likeyAlready == 0) {
+			//novel게시판에 추천수 (reco_point)만큼 증가 -로그인 시 세션에 랭크객체가 저장되어있다-
+
+			RankCondition rank = (RankCondition) session.getAttribute("memberRank");
+			LikeyCondition lc = new LikeyCondition();
+			lc.setBno(likey_bno);
+			lc.setReco_point(rank.getUr().getReco_point());
+			sn.addLikey(lc);
+
+			// 추천(활동)했으니독자포인트 1증가
+			sm.AddR_point(loginMember.getEmail());
+			// 추천받았으니 작가포인트 1증가
+			sm.AddW_point(email);
+			// 점수 새로고침을 위해 로그인 시처럼 세션에 계급정보
+
+			sm.rankProcess(loginMember, session);
+			result = "suc";
+
+		}
+
+		else {
+		 result = "fal";
+		}
 	
+		return result;
+
+	}
+
 //	
 //	
 //	@RequestMapping(value="/novel/report.html")
