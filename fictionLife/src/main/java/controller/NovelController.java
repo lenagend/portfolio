@@ -18,9 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import condition.LikeyCondition;
+import condition.PointCondition;
 import condition.RankCondition;
 import logic.Service_Member;
 import logic.Service_Novel;
+import model.Favorite;
 import model.Likey;
 import model.Member;
 import model.Novel;
@@ -207,45 +209,90 @@ public class NovelController {
 		return mav;
 		
 	}
-//	
-//	
-//	
-//	
-//	@RequestMapping(value="/novel/favorite.html")
-//	public ModelAndView favorite(HttpSession session, Integer novelId, String writer) {
-//
-//		ModelAndView mav = new ModelAndView("favoriteResult");
-//		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
-//		Favorite f = new Favorite();
-//		f.setEmail(loginuser.getEmail());
-//		f.setNovel_id(novelId);
-//		
-//		Integer favoriteAlready = sn.favorite(f);
-//		if(favoriteAlready==0) {
-//			
-//			Integer seqno = sn.maxFavoriteSeqno();
-//			if(seqno==null)seqno=0;
-//			
-//			f.setSeqno(seqno+1);
-//			
-//			sn.insertFavorite(f);
-//		
-//			//novel게시판에 선호작수 1회추가
-//			sn.plusFavorite(novelId);
-//			//작가 점수 올려주기
-//			sm.AddW_point5(writer);
-//			
-//			mav.addObject("favoriteResult","OK");
-//			return mav;
-//			
-//		}else {
-//			mav.addObject("favoriteResult","NOK");
-//			return mav;
-//		}
-//		
-//	}
-//	
-//	
+	
+	@RequestMapping(value = "/novel/ajaxLikey.html")
+	@ResponseBody
+	public String ajaxLikey(HttpSession session, String bno, String email) {
+		
+		Member loginMember = (Member) session.getAttribute("LOGINMEMBER");
+		Integer likey_bno = Integer.parseInt(bno);
+		Likey l = new Likey();
+		l.setEmail(loginMember.getEmail());
+		l.setLikey_bno(likey_bno);
+		Integer likeyAlready = sn.likeyCheck(l);
+		String result;
+		if (likeyAlready == 0) {
+		
+			//likey테이블에인설트
+			sn.likey(l);
+			
+			//novel게시판에 추천수 (reco_point)만큼 증가 -로그인 시 세션에 랭크객체가 저장되어있다-
+			RankCondition rank = (RankCondition) session.getAttribute("memberRank");
+			LikeyCondition lc = new LikeyCondition();
+			lc.setBno(likey_bno);
+			lc.setReco_point(rank.getUr().getReco_point());
+			sn.addLikey(lc);
+
+			// 추천(활동)했으니독자포인트 1증가
+			PointCondition pc = new PointCondition();
+			pc.setPoint(1); pc.setEmail(loginMember.getEmail());
+			sm.AddR_point(pc);
+			// 추천받았으니 작가포인트 1증가
+			pc.setPoint(1);
+			pc.setEmail(email);
+			sm.AddW_point(pc);
+			// 점수 새로고침을 위해 로그인 시처럼 세션에 계급정보
+
+			sm.rankProcess(loginMember, session);
+			result = "suc";
+
+		}
+
+		else {
+		 result = "fail";
+		}
+	
+		return result;
+
+	}
+	
+	
+	@RequestMapping(value="/novel/favorite.html")
+	@ResponseBody
+	public String favorite(HttpSession session, Integer novelId, String writer) {
+
+		
+		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
+		Favorite f = new Favorite();
+		f.setEmail(loginuser.getEmail());
+		f.setNovel_id(novelId);
+		
+		Integer favoriteAlready = sn.favorite(f);
+		if(favoriteAlready==0) {
+			
+			
+			
+			
+			sn.insertFavorite(f);
+		
+			//novel게시판에 선호작수 1회추가
+			sn.plusFavorite(novelId);
+			//작가 점수 올려주기(삭제했다 재등록하면서 점수 올리는것방지하기위해 검색후..블라인드에 예스되어있으면 하면 안됨-이건 나중에-)
+			PointCondition pc = new PointCondition();
+			pc.setPoint(1); pc.setEmail(writer);
+			sm.AddW_point(pc);
+			
+			
+			return "favoSuc";
+			
+		}else {
+			
+			return "favoFail";
+		}
+		
+	}
+	
+	
 //	@RequestMapping(value="/novel/deleteFavorite.html")
 //	public ModelAndView deleteFavorite(HttpSession session, Integer novelId) {
 //
@@ -291,97 +338,9 @@ public class NovelController {
 //		return mav;
 //	}
 //	
-	@RequestMapping(value="/novel/likey.html")
-	public ModelAndView likey(HttpSession session, Integer bno, String writerEmail, Integer epi_number, Integer pni) {
 
-		ModelAndView mav = new ModelAndView("likeyResult");
-		mav.addObject("bno", bno);
-		mav.addObject("epi_number", epi_number);
-		mav.addObject("pni", pni);
-		
-		
-		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
-		Likey l = new Likey();
-		l.setEmail(loginuser.getEmail());
-		l.setLikey_bno(bno);
-			
-		
-		Integer likeyAlready = sn.likeyCheck(l);
-		if(likeyAlready==0) {
-			
-			Integer seqno = sn.maxLikeySeqno();
-			if(seqno==null)seqno=0;
-			
-			l.setSeqno(seqno+1);
-			
-			sn.likey(l);
-		
-			//novel게시판에 추천수 (reco_point)만큼 증가 -로그인 시 세션에 랭크객체가 저장되어있다-
-			
-			RankCondition rank = (RankCondition)session.getAttribute("memberRank");
-			LikeyCondition lc = new LikeyCondition();
-			lc.setBno(bno);
-			lc.setReco_point(rank.getUr().getReco_point());
-			sn.addLikey(lc);
-			
-			//추천(활동)했으니독자포인트 1증가
-			sm.AddR_point(loginuser.getEmail());
-			//추천받았으니 작가포인트 1증가
-			sm.AddW_point(writerEmail);
-			//점수 새로고침을 위해 로그인 시처럼 세션에 계급정보
-			
-			sm.rankProcess(loginuser, session);
-		
-			
-			
-			mav.addObject("likeyResult","OK");
-			return mav;
-			
-		}else {
-			mav.addObject("likeyResult","NOK");
-			return mav;
-		}
-		
-	}
 	
-	@RequestMapping(value = "/novel/ajaxLikey.html")
-	@ResponseBody
-	public String ajaxLikey(HttpSession session, String bno, String email) {
-		System.out.println("옴??");System.out.println("옴??");System.out.println("옴??");System.out.println("옴??");
-		Member loginMember = (Member) session.getAttribute("LOGINMEMBER");
-		Integer likey_bno = Integer.parseInt(bno);
-		Likey l = new Likey();
-		l.setEmail(loginMember.getEmail());
-		l.setLikey_bno(likey_bno);
-		Integer likeyAlready = sn.likeyCheck(l);
-		String result;
-		if (likeyAlready == 0) {
-			//novel게시판에 추천수 (reco_point)만큼 증가 -로그인 시 세션에 랭크객체가 저장되어있다-
-
-			RankCondition rank = (RankCondition) session.getAttribute("memberRank");
-			LikeyCondition lc = new LikeyCondition();
-			lc.setBno(likey_bno);
-			lc.setReco_point(rank.getUr().getReco_point());
-			sn.addLikey(lc);
-
-			// 추천(활동)했으니독자포인트 1증가
-			sm.AddR_point(loginMember.getEmail());
-			// 추천받았으니 작가포인트 1증가
-			sm.AddW_point(email);
-			// 점수 새로고침을 위해 로그인 시처럼 세션에 계급정보
-
-			sm.rankProcess(loginMember, session);
-			result = "suc";
-
-		}
-
-		else {
-		 result = "fal";
-		}
 	
-		return result;
-
-	}
 
 //	
 //	

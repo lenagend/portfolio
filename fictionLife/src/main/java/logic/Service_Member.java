@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
+import condition.PointCondition;
 import model.Admin;
 import model.Icon;
 import model.Member;
@@ -42,13 +43,13 @@ public interface Service_Member {
 
 	public void updateReaders(User_rank ur);
 
-	public void AddR_point(String Email);
+	public void AddR_point(PointCondition pc);
 
-	public void AddW_point(String Email);
+	public void AddW_point(PointCondition pc);
 
 	public void rankProcess(Member loginMember, HttpSession session);
 
-	public void AddW_point5(String Email);
+
 
 	public String getW_icon_ImageByEmail(String email);
 

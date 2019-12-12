@@ -42,7 +42,7 @@ $(document).ready(function() {
              success: function(result) {
             	 if(result == 'suc'){
             		 alert('추천되었습니다'); 
-            	 }else if (result == 'fal'){
+            	 }else if (result == 'fail'){
             		 alert('이미 추천 했습니다');
             	 }
                 
@@ -53,6 +53,28 @@ $(document).ready(function() {
 
 	});
 });
+	$('#favoriteBtn').click(function() {
+		
+		$.ajax({
+            type: "POST",
+            url: "../novel/favorite.html",
+            data:{"novelId": '${parentNovel.id }',
+           	 "email": $("#email").val()},
+            success: function(result) {
+           	 if(result == 'favoSuc'){
+           		 alert('관심목록에 추가되었습니다'); 
+           	 }else if (result == 'favoFail'){
+           		 alert('이미 관심목록에 있습니다');
+           	 }
+               
+               
+            }, error: function() {
+                alert('오류');
+            }
+
+	});
+		
+	})
 
 });
 </script>
@@ -104,7 +126,7 @@ $(document).ready(function() {
 	
 	<c:if test="${sessionScope.LOGINMEMBER != null }"><!-- 로그인 유저만 -->
 		
-		
+		<button id="favoriteBtn">관심작품</button>
 		<a href="../novel/favorite.html?novelId=${parentNovel.id }&writer=${parentNovel.email}">관심작품</a>
 		<button id="likeyBtn" >좋아요</button>
 		<a href="#reportForm" onclick="reportForm();">신고</a>

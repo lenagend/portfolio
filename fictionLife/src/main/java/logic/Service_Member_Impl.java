@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.ModelAndView;
 
+import condition.PointCondition;
 import condition.RankCondition;
 import dao.MemberDao;
 import dao.RankDao;
@@ -112,13 +113,13 @@ public class Service_Member_Impl implements Service_Member {
 
 	}
 
-	public void AddR_point(String Email) {
-		rankDao.AddR_point(Email);
+	public void AddR_point(PointCondition pc) {
+		rankDao.AddR_point(pc);
 
 	}
 
-	public void AddW_point(String Email) {
-		rankDao.AddW_point(Email);
+	public void AddW_point(PointCondition pc) {
+		rankDao.AddW_point(pc);
 	}
 
 	public void rankProcess(Member loginMember, HttpSession session) {
@@ -252,10 +253,7 @@ public class Service_Member_Impl implements Service_Member {
 		return memberDao.adminLogin(email);
 	}
 
-	public void AddW_point5(String Email) {
-		rankDao.AddW_point5(Email);
-
-	}
+	
 
 	public String getR_icon_ImageByNickname(String nickname) {
 

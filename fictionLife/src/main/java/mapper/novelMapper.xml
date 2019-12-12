@@ -199,6 +199,21 @@ values(#{likey_bno}, #{email})
 <update id="addLikey">
 update novel_board set reco_cnt = reco_cnt+#{reco_point} where bno=#{bno}
 </update>
+
+<!-- 즐겨찾기 기능 -->
+<select id="favoriteAlready" resultType="Integer">
+select count(*) from favorite where email = #{email} and novel_id = #{novel_id} 
+</select>
+
+<insert  id="insertFavorite">
+insert into favorite(email, novel_id)
+ values(#{email},#{novel_id})
+</insert>
+
+<update id="plusFavorite">
+update novel set favorite_num = favorite_num+1 where id=#{value}
+</update>
+
 </mapper>
 
 

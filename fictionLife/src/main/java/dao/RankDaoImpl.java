@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import condition.PointCondition;
 import model.Icon;
 import model.User_rank;
 
@@ -40,18 +41,15 @@ public class RankDaoImpl implements RankDao {
 		session.update(MAPPER+"updateReaders", ur);
 
 	}
-	public void AddR_point(String Email) {
-		session.update(MAPPER+"AddR_point", Email);
+	public void AddR_point(PointCondition pc) {
+		session.update(MAPPER+"AddR_point", pc);
 		
 	}
-	public void AddW_point(String Email) {
-		session.update(MAPPER+"AddW_point", Email);
+	public void AddW_point(PointCondition pc) {
+		session.update(MAPPER+"AddW_point", pc);
 		
 	}
-	public void AddW_point5(String Email) {
-		session.update(MAPPER+"AddW_point5", Email);
-		
-	}
+
 	
 	public String getR_icon_ImageByNickname(String nickname) {
 		
