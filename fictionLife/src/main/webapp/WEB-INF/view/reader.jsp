@@ -30,8 +30,29 @@ border: 1px solid black;
 
 }
 </style>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#likey').click(function() {
+		 $.ajax({
+             type: "POST",
+             url: "../novel/ajaxLikey.html",
+             data:{"bno": $("#bno").val() },
+             success: function() {
+                 alert('추천되었습니다');
+                 location.reload();
+             }, error: function() {
+                 alert('이미 추천했습니다');
+             }
+
+	});
+});
+
+
+</script>
 </head>
 <body>
+<input type="hidden" value="${EPISODE.bno }" id="bno">
+
 
 <table>
 	<tr>
@@ -78,7 +99,7 @@ border: 1px solid black;
 		
 		
 		<a href="../novel/favorite.html?novelId=${parentNovel.id }&writer=${parentNovel.email}">관심작품</a>
-		<a href="../novel/likey.html?bno=${EPISODE.bno }&writerEmail=${parentNovel.email}&pni=${parentNovel.id}&epi_number=${EPISODE.epi_number}">좋아요</a>
+		<button id="likey">좋아요</button>
 		<a href="#reportForm" onclick="reportForm();">신고</a>
 		<div id="reportForm">
 		<form action="../novel/report.html?bno=${EPISODE.bno }" method="post">

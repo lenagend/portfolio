@@ -7,10 +7,12 @@
 <select id="countNovelList" resultType="Integer">
 select count(*) from novel where blind = 'no' and episode != 0
 </select>
+
 <!-- 이메일로 작품갯수찾아오기-->
 <select id="getMaxMyNovel" resultType="Integer">
 select count(*) from novel where email = #{value} and blind = 'no'
 </select>
+
 <!-- 이메일로 작품찾아오기 -->
 <select id="findMyNovel" resultType="model.Novel">
 
@@ -113,8 +115,81 @@ LIMIT #{startRow} , #{endRow}
 
 </select>
 
+<!-- no1작가 -->
+<select id="findTop1Novel" resultType="model.Novel">
 
 
+SELECT * FROM novel WHERE email = (
+SELECT * FROM 
+(SELECT email FROM user_rank ORDER by w_point DESC LIMIT 0,1)AS ur_tbl) 
+ORDER BY regi_date LIMIT 0,1
+
+</select> 
+
+<!-- no2작가 -->
+<select id="findTop2Novel" resultType="model.Novel">
+
+
+SELECT * FROM novel WHERE email = (
+SELECT * FROM 
+(SELECT email FROM user_rank ORDER by w_point DESC LIMIT 1,1)AS ur_tbl) 
+ORDER BY regi_date LIMIT 0,1
+
+</select> 
+<!-- no3작가 -->
+<select id="findTop3Novel" resultType="model.Novel">
+
+
+SELECT * FROM novel WHERE email = (
+SELECT * FROM 
+(SELECT email FROM user_rank ORDER by w_point DESC LIMIT 2,1)AS ur_tbl) 
+ORDER BY regi_date LIMIT 0,1
+
+</select> 
+<!-- no4작가 -->
+<select id="findTop4Novel" resultType="model.Novel">
+
+
+SELECT * FROM novel WHERE email = (
+SELECT * FROM 
+(SELECT email FROM user_rank ORDER by w_point DESC LIMIT 3,1)AS ur_tbl) 
+ORDER BY regi_date LIMIT 0,1
+
+</select> 
+<!-- no5작가 -->
+<select id="findTop5Novel" resultType="model.Novel">
+
+
+SELECT * FROM novel WHERE email = (
+SELECT * FROM 
+(SELECT email FROM user_rank ORDER by w_point DESC LIMIT 4,1)AS ur_tbl) 
+ORDER BY regi_date LIMIT 0,1
+
+</select> 
+
+<!-- 추천수순 -->
+<select id="findTop10NovelByReco_cnt" resultType="model.Novel">
+
+
+SELECT * FROM novel WHERE blind != 'yes' ORDER BY favorite_num LIMIT 0,5
+
+
+</select> 
+
+<!-- 작품 수정, 삭제 -->
+<update id="modifyNovel">
+update novel set title = #{title} , image = #{image}, description = #{description}, type= #{type} where id = #{id}
+</update>
+<update id="deleteNovel">
+update novel set blind='yes' where id = #{id}
+</update>
+
+
+<!-- 좋아요 기능 -->
+<!-- 이미 좋아요한건지 -->
+<select id="likeyCheck" resultType="Integer">
+select count(*) from likey where likey_bno = ${likey_bno} and email = #{email}
+</select>
 </mapper>
 
 

@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import model.Admin;
 import model.Member;
 
 @Repository
@@ -36,7 +37,7 @@ public Member findEmailByPhone(String phone) {
 	return session.selectOne(MAPPER+"findEmail", phone);
 }
 
-public Integer adminLogin(String email) {
+public Admin adminLogin(String email) {
 	
 	return session.selectOne(MAPPER+"adminLogin", email);
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import logic.Service_Admin;
 import logic.Service_Member;
 import logic.Service_Novel;
 import model.Member;
+import model.Notice_board;
 import model.Novel;
 import model.Novel_board;
 
@@ -93,27 +95,39 @@ public class HomeController {
 			
 			
 		}
-//		
-//		
-//		
-//		//top5 작가들 작품
-//		List<Novel> top5List = new ArrayList<Novel>();
-//		top5List.add(0,sn.findTop1Novel());
-//		top5List.add(1,sn.findTop2Novel());
-//		top5List.add(2, sn.findTop3Novel());
-//		top5List.add(3, sn.findTop4Novel());
-//		top5List.add(4, sn.findTop5Novel());
-//		
-//		mav.addObject("TOP5_LIST", top5List);
-//		
-//		//추천수 1위~ 5위까지
-//		List<Novel> top10List = sn.findTop10NovelByReco_cnt();
-//		mav.addObject("TOP10_LIST", top10List);
-//		
-//		//공지사항
-//		List<Notice_board> noticeList = sa.getLatestNotice();
-//		mav.addObject("NOTICE_LIST", noticeList);
-//		
+		
+		
+		
+		//top5 작가들 작품
+		List<Novel> top5List = new ArrayList<Novel>();
+		top5List.add(0,sn.findTop1Novel());
+		top5List.add(1,sn.findTop2Novel());
+		top5List.add(2, sn.findTop3Novel());
+		top5List.add(3, sn.findTop4Novel());
+		top5List.add(4, sn.findTop5Novel());
+		
+		mav.addObject("TOP5_LIST", top5List);
+		
+		//추천수 1위~ 5위까지
+		List<Novel> top10List = sn.findTop10NovelByReco_cnt();
+		mav.addObject("TOP10_LIST", top10List);
+		
+		//공지사항
+		List<Notice_board> noticeList = sa.getLatestNotice();
+		//글마다 멤버객체를가지고있는다
+				if(noticeList != null) {
+					Iterator it = noticeList.iterator();
+					int i = 0;
+					while(it.hasNext()) {
+						Notice_board ci =(Notice_board)it.next();
+						ci.setMember(sm.checkEmail(ci.getEmail()));
+						i++;
+					}
+					
+					
+				}
+		mav.addObject("NOTICE_LIST", noticeList);
+		
 		mav.addObject("NOVEL_LIST", allNovelList);
 		mav.addObject("COUNT", cnt);
 		mav.addObject("pageCount", c.getPageCnt());
@@ -250,25 +264,25 @@ public class HomeController {
 //	
 //	
 //	
-//	@RequestMapping(value="/home/loadModifyMember.html")
-//	public ModelAndView loadModifyMember(HttpSession session) {
-//		ModelAndView mav = new ModelAndView("main");
-//		Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
-//		String loginEmail = loginMember.getEmail();
-//		Member modifyMember = sm.checkEmail(loginEmail); 
-//		
-//		mav.addObject("BODY", "myPage.jsp");
-//		mav.addObject("member",modifyMember);
-//		mav.addObject("CONTENTNAME", "modifyForm");
-//		
-//		return mav;
-//	}
-//	
-//	
-//	
-//	
-//
-//	
+	@RequestMapping(value="/home/loadModifyMember.html")
+	public ModelAndView loadModifyMember(HttpSession session) {
+		ModelAndView mav = new ModelAndView("main");
+		Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
+		String loginEmail = loginMember.getEmail();
+		Member modifyMember = sm.checkEmail(loginEmail); 
+		
+		mav.addObject("BODY", "myPage.jsp");
+		mav.addObject("member",modifyMember);
+		mav.addObject("CONTENTNAME", "modifyForm");
+		
+		return mav;
+	}
+	
+	
+	
+	
+
+	
 	@RequestMapping(value="/home/loadRegiNovel.html")
 	public ModelAndView loadRegiNovel(HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
@@ -284,23 +298,23 @@ public class HomeController {
 		
 	}
 	
-//	@RequestMapping(value="/home/loadModiNovel.html")
-//	public ModelAndView loadModiNovel(Integer novelId, String novelImage) {
-//		ModelAndView mav = new ModelAndView("main");
-//		Novel novel = new Novel();
-//		novel.setId(novelId);
-//		novel.setImage(novelImage);
-//		mav.addObject("BODY", "modiNovel.jsp");
-//		mav.addObject(novel);
-//		return mav;
-//	}
-//	
-//	@RequestMapping(value="/home/loadDeleteNovel.html")
-//	public ModelAndView loadDeleteNovel(Integer novelId) {
-//		ModelAndView mav = new ModelAndView("checkDeleteOk");
-//		mav.addObject("deleteNovelid", novelId);
-//		return mav;
-//	}
+	@RequestMapping(value="/home/loadModiNovel.html")
+	public ModelAndView loadModiNovel(Integer novelId, String novelImage) {
+		ModelAndView mav = new ModelAndView("main");
+		Novel novel = new Novel();
+		novel.setId(novelId);
+		novel.setImage(novelImage);
+		mav.addObject("BODY", "modiNovel.jsp");
+		mav.addObject(novel);
+		return mav;
+	}
+	
+	@RequestMapping(value="/home/loadDeleteNovel.html")
+	public ModelAndView loadDeleteNovel(Integer novelId) {
+		ModelAndView mav = new ModelAndView("checkDeleteOk");
+		mav.addObject("deleteNovelid", novelId);
+		return mav;
+	}
 	@RequestMapping(value="/home/loadEpisodeForm.html")
 	public ModelAndView loadEpiForm(Integer novelId) {
 		
@@ -453,73 +467,69 @@ public class HomeController {
 		
 		return mav;
 	};
-//	
-//	@RequestMapping(value="/novel/loadModifyEpiForm.html")
-//	public ModelAndView modifyEpi(Integer epiNumber, Integer parentNovelId) {
-//		Novel_board inputNb = new Novel_board();
-//		inputNb.setEpi_number(epiNumber);
-//		inputNb.setNovel_id(parentNovelId);
-//		
-//		inputNb = sn.getEpiContent(inputNb);
-//		
-//		ModelAndView mav = new ModelAndView("main");
-//		mav.addObject("BODY", "modifier.jsp");
-//		mav.addObject("novel_board", inputNb);
-//		
-//		
-//		return mav;
-//	}
-//	
-//	@RequestMapping(value="/home/loadNotice.html")
-//	public ModelAndView loadNotice( Integer pageNo) {
-//		
-//		Integer cnt =sa.countNoticeBno();
-//		
-//		if(cnt==null) cnt=0;
-//		
-//		int startRow = 0; int endRow=0;int pageCnt=0;
-//		int currentPage=0;
-//		
-//		if(pageNo==null) currentPage =1;
-//		else currentPage = pageNo;
-//		
-//		if(cnt>0) {
-//			pageCnt = cnt/10;
-//			if(cnt % 10>0) pageCnt++;
-//			startRow = (currentPage-1)*10 +1;
-//			endRow = currentPage * 10;
-//			
-//			if(endRow > cnt) endRow = cnt;
-//			
-//		}
-//		
-//		PagingCondition c = new PagingCondition();
-//		c.setStartRow(startRow); c.setEndRow(endRow);
-//		List<Notice_board> nociteList = sa.getNoticeList(c);
-//		
-//		ModelAndView mav = new ModelAndView("main");
-//
-//		mav.addObject("NOTICE_LIST",nociteList);
-//		mav.addObject("COUNT", cnt);
-//		mav.addObject("pageCount",pageCnt);
-//		mav.addObject("startRow",startRow);
-//		mav.addObject("endRow",endRow);
-//		mav.addObject("currentPage",currentPage);
-//		mav.addObject("BODY", "noticeList.jsp");
-//		
-//		//답글 갯수
-//		
-//		return mav;
-//	}
-//	
-//	@RequestMapping(value="/home/loadNoticeReader.html")
-//	public ModelAndView loadNoticeReader(String content, HttpServletRequest request) {
-//		String referer = request.getHeader("Referer");
-//		request.getSession().setAttribute("redirectURI", referer);	
-//		ModelAndView mav = new ModelAndView("main");
-//		mav.addObject("BODY", "noticeReader.jsp");
-//		mav.addObject("content", content);
-//		return mav;
-//		
-//	}
+	
+	@RequestMapping(value="/novel/loadModifyEpiForm.html")
+	public ModelAndView modifyEpi(Integer epiNumber, Integer parentNovelId) {
+		Novel_board inputNb = new Novel_board();
+		inputNb.setEpi_number(epiNumber);
+		inputNb.setNovel_id(parentNovelId);
+		
+		inputNb = sn.getEpiContent(inputNb);
+		
+		ModelAndView mav = new ModelAndView("main");
+		mav.addObject("BODY", "modifier.jsp");
+		mav.addObject("novel_board", inputNb);
+		
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/home/loadNotice.html")
+	public ModelAndView loadNotice( Integer pageNo) {
+		
+		Integer cnt =sa.countNoticeBno();
+		
+		
+		PagingCondition c = new PagingCondition();
+		c.paging(cnt, pageNo, 10);
+		
+		
+		List<Notice_board> nociteList = sa.getNoticeList(c);
+		//글마다 멤버객체를가지고있는다
+				if(nociteList != null) {
+					Iterator it = nociteList.iterator();
+					int i = 0;
+					while(it.hasNext()) {
+						Notice_board ci =(Notice_board)it.next();
+						ci.setMember(sm.checkEmail(ci.getEmail()));
+						i++;
+					}
+					
+					
+				}
+		
+		ModelAndView mav = new ModelAndView("main");
+
+		mav.addObject("NOTICE_LIST",nociteList);
+		mav.addObject("COUNT", cnt);
+		mav.addObject("pageCount",c.getPageCnt());
+		mav.addObject("startRow",c.getStartRow());
+		mav.addObject("endRow",c.getEndRow());
+		mav.addObject("currentPage",c.getCurrentPage());
+		mav.addObject("BODY", "noticeList.jsp");
+		
+		//답글 갯수
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/home/loadNoticeReader.html")
+	public ModelAndView loadNoticeReader(String content) {
+		
+		ModelAndView mav = new ModelAndView("main");
+		mav.addObject("BODY", "noticeReader.jsp");
+		mav.addObject("content", content);
+		return mav;
+		
+	}
 }

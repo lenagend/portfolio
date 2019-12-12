@@ -15,7 +15,7 @@ public interface Service_Admin {
 	public Integer getCount();
 	public void userBlind2(String nickname);
 	public void novelBlind2(Integer id);
-	public void insertNotice(Notice_board nb);
+	public void insertNotice(Notice_board nb,HttpSession session);
 	public List<Notice_board> getLatestNotice();
 	public Integer countNoticeBno();
 	public List<Notice_board> getNoticeList(PagingCondition pc);

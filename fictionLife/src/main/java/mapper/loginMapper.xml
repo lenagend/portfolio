@@ -29,14 +29,15 @@ select * from member where phone=#{value}
 	select * from member where email = #{email} and password = #{password}
 </select>
 <!-- 혹시관리자인지 -->
-<select id="adminLogin" resultType="Integer">
-select count(*) from admin where email=#{email}
+<select id="adminLogin" resultType="model.Admin">
+select * from admin where email=#{email}
 </select>
 
 
-
-
-
+<!-- 멤버수정 -->
+<update id="modifyMember">
+update member set password =#{password} where email = #{email}
+</update>
 
 
 

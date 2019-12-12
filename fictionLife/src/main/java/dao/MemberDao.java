@@ -1,6 +1,6 @@
 package dao;
 
-import condition.EmailCondition;
+import model.Admin;
 import model.Member;
 
 public interface MemberDao {
@@ -14,7 +14,7 @@ public interface MemberDao {
 	 
 	 Member findEmailByPhone(String phone);
 
-	 Integer adminLogin(String email);
+	 Admin adminLogin(String email);
 	 
 	 public void modifyMember(Member member);
 	 

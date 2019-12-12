@@ -59,7 +59,7 @@ font-size: 150%;
 							<a href="../home/loadMyPage.html">My Page</a>
 						</td>
 					<td>
-						<c:if test="${ADMIN == LOGINMEMBER.nickname }">
+						<c:if test="${ADMIN.email == LOGINMEMBER.email }">
 						<a href="../admin/loadAdminPage.html"><span style="color: tomato; font-size: 75%">관리자 페이지</span></a>
 						</c:if>							
 						</td>

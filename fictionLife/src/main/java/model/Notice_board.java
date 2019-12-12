@@ -17,9 +17,15 @@ public class Notice_board {
 	private String content;
 	private String regi_date;
 	private String blind;
-	private String nickname;
 	private String icon;
 	private String email;
+	private Member member;
+	public Member getMember() {
+		return member;
+	}
+	public void setMember(Member member) {
+		this.member = member;
+	}
 	
 	public String getEmail() {
 		return email;
@@ -66,12 +72,7 @@ public class Notice_board {
 	public void setBlind(String blind) {
 		this.blind = blind;
 	}
-	public String getNickname() {
-		return nickname;
-	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+
 	public String getIcon() {
 		return icon;
 	}

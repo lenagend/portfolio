@@ -2,7 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.adminMapper">
+<select id="getLatestNotice" resultType="model.Notice_board">
 
+select * from notice_board where blind = 'no' order by bno desc limit 0,3
+</select>
+<!-- 신고글 총량 -->
+<select id="countReport" resultType="Integer">
+select count(*) from report_novel
+
+</select>
+<!-- 신고글가져오기 -->
+<select id="getReport" resultType="model.Report_novel">
+
+
+
+SELECT * FROM report_novel ORDER BY seqno DESC LIMIT #{startRow}, #{endRow}
+
+</select>
+
+<!-- 공지등록 -->
+<insert id="insertNotice">
+insert into notice_board(admin_id, title, content, blind,email )
+ values(#{admin_id},#{title},#{content},'no',#{email})
+</insert>
+
+<!-- 공지 전체 수량 -->
+<select id="countNoticeBno" resultType="Integer">
+select count(bno) from notice_board where blind != 'yes'
+</select>
+<!-- 공지 가져오기 -->
+<select id="getNoticeList" resultType="model.Notice_board">
+
+select * from notice_board where blind !='yes' order by bno desc limit #{startRow}, #{endRow}
+
+
+</select>
+
+<!-- 블라인드들 -->
+<update id="userBlind">
+update member set blind = 'yes' where nickname=#{value}
+</update>
+
+<update id="novelBlind">
+update novel set blind = 'yes' where id=#{value}
+</update>
+
+<update id="userBlind2">
+update member set blind = 'no' where nickname=#{value}
+</update>
+
+<update id="novelBlind2">
+update novel set blind = 'no' where id=#{value}
+</update>
 </mapper>
 
 

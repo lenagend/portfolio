@@ -194,6 +194,10 @@ color black;
 			
 			<div id="div_notice">
 			<div align="left">
+			<c:if test="${empty NOTICE_LIST }">
+			<div class="menu"><a id="noticeList" href="#noticeList">#공지사항</a></div>
+			등록된 공지가 없습니다
+			</c:if>
 			<c:if test="${! empty NOTICE_LIST }">			
 			<table class="table table-striped" >
 			<thead>
@@ -208,7 +212,7 @@ color black;
 				<c:forEach items="${NOTICE_LIST }" var="notice"> 
 					<tr>
 						<td><a id="notice" href="../home/loadNoticeReader.html?content=${notice.content }">${notice.title }</a></td>
-						<td>${notice.nickname }</td>
+						<td>${notice.member.nickname }</td>
 						<td>${notice.regi_date }</td>
 					</tr>
 				

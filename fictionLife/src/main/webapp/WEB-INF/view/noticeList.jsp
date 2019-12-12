@@ -59,9 +59,9 @@
 			<tr>
 				<td>${cnt.bno }</td>
 				<td><a href="../home/loadNoticeReader.html?content=${cnt.content }">${cnt.title }</a></td>
-				<td>${cnt.nickname }</td>
+				<td>${cnt.member.nickname }</td>
 				<td>${cnt.regi_date }
-				<c:if test="${LOGINMEMBER.nickname == cnt.nickname }">
+				<c:if test="${LOGINMEMBER.nickname == cnt.member.nickname }">
 				
 				
 					<a href="../admin/loadModifyNoticeForm.html?bno=${cnt.bno }&title=${cnt.title}&content=${cnt.content}">수정</a>

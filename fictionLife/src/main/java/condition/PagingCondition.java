@@ -29,9 +29,8 @@ public class PagingCondition {
 			this.pageCnt = this.cnt/rows;
 			if(this.cnt % rows>0) this.pageCnt++;
 			this.startRow = (this.currentPage-1)*rows ;
-			this.endRow = this.currentPage * rows;
-			
-			if(this.endRow > this.cnt) this.endRow = this.cnt;
+			this.endRow =  rows;
+		
 			
 		}
 		

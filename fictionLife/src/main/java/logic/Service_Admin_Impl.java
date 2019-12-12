@@ -47,16 +47,11 @@ public class Service_Admin_Impl implements Service_Admin {
 
 	}
 
-	public void insertNotice(Notice_board nb) {
-
-		Integer bno = ad.maxNoticeBno();
-
-		Admin admin = ad.getAdminByEmail(nb.getEmail());
-		if (bno == null)
-			bno = 0;
+	public void insertNotice(Notice_board nb, HttpSession session) {
+		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
+		Admin admin = (Admin)session.getAttribute("ADMIN");
 		nb.setAdmin_id(admin.getAdmin_id());
-		nb.setBno(bno + 1);
-
+		nb.setEmail(loginuser.getEmail());
 		ad.insertNotice(nb);
 	}
 

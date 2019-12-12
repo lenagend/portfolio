@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import condition.RankCondition;
 import dao.MemberDao;
 import dao.RankDao;
+import model.Admin;
 import model.Icon;
 import model.Member;
 import model.User_rank;
@@ -158,9 +159,10 @@ public class Service_Member_Impl implements Service_Member {
 			
 			session.setAttribute("LOGINMEMBER", loginMember);//세션에 멤버 정보
 			//세션에 랭크 정보
-			if(adminLogin(loginMember.getEmail())==1) {
+			Admin ad = this.adminLogin(loginMember.getEmail());
+			if(ad!=null) {
 				//관리자
-				session.setAttribute("ADMIN", loginMember.getNickname());//세션에 관리자 정보
+				session.setAttribute("ADMIN", ad);//세션에 관리자 정보
 			}
 			
 			
@@ -245,7 +247,7 @@ public class Service_Member_Impl implements Service_Member {
 
 	}
 
-	public Integer adminLogin(String email) {
+	public Admin adminLogin(String email) {
 
 		return memberDao.adminLogin(email);
 	}

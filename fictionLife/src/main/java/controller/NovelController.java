@@ -20,12 +20,10 @@ import condition.LikeyCondition;
 import condition.RankCondition;
 import logic.Service_Member;
 import logic.Service_Novel;
-import model.Favorite;
 import model.Likey;
 import model.Member;
 import model.Novel;
 import model.Novel_board;
-import model.Report_novel;
 
 @Controller
 public class NovelController {
@@ -103,78 +101,78 @@ public class NovelController {
 		
 		
 	}
-//	//수정
-//	@RequestMapping(value="/novel/modifyNovel.html")
-//	public ModelAndView modiNovel( Novel novel, HttpSession session, BindingResult br
-//			) throws IOException {
-//		
-//		ModelAndView mav = new ModelAndView("main");
-//		
-//			if(novel.getTitle().equals("")) {
-//				System.out.println("불러온 번호"+ novel.getId());
-//				FieldError fe = new FieldError("regiNovel.jsp", "title", "작품 제목을 입력해주세요");
-//				br.addError(fe);		
-//				mav.addObject("novel", novel);
-//				mav.addObject("BODY", "modiNovel.jsp");
-//				return mav;
-//			}
-//			if(novel.getDescription().equals("")) {
-//				FieldError fe = new FieldError("regiNovel.jsp", "description", "작품 설명을 입력해주세요");
-//				br.addError(fe);		
-//				mav.addObject("BODY", "modiNovel.jsp");
-//				return mav;
-//			}
-//			
-//			
-//
-//			MultipartFile multiFile= novel.getImageFile();
-//			
-//			String fileName=null; String path=null;
-//			OutputStream os=null;
-//			
-//			
-//				
-//				fileName=multiFile.getOriginalFilename();
-//				if(! fileName.equals("")) {
-//				ServletContext ctx=session.getServletContext();
-//				path=ctx.getRealPath("/upload/"+fileName);
-//				System.out.println("업로드경로:"+path);
-//				try {
-//					os=new FileOutputStream(path);
-//					BufferedInputStream bis =
-//						new BufferedInputStream(
-//							multiFile.getInputStream());
-//					byte[] buffer = new byte[8156];
-//					int read = 0;
-//					while( (read=bis.read(buffer))>0) {
-//						os.write(buffer,0,read);
-//					}
-//					if(os != null) os.close();
-//				}catch(Exception e) {
-//					e.printStackTrace();
-//				}
-//				novel.setImage(fileName);
-//			}//작가가 표지를 선택한 경우
-//			
-//			sn.modifyNovel(novel);
-//			mav.setViewName("modiResultPage");
-//		
-//			return mav;
-//		
-//		
-//	}
-//	
-//	//삭제(블라인드 처리)
-//	@RequestMapping(value="/novel/deleteNovel.html")
-//	public ModelAndView deleteNovel(Integer deleteNovelId) {
-//		sn.deleteNovel(deleteNovelId);
-//		ModelAndView mav = new ModelAndView("deleteResultPage");
-//				
-//		return mav;
-//		
-//	}
-//	
-//	
+	//수정
+	@RequestMapping(value="/novel/modifyNovel.html")
+	public ModelAndView modiNovel( Novel novel, HttpSession session, BindingResult br
+			) throws IOException {
+		
+		ModelAndView mav = new ModelAndView("main");
+		
+			if(novel.getTitle().equals("")) {
+				System.out.println("불러온 번호"+ novel.getId());
+				FieldError fe = new FieldError("regiNovel.jsp", "title", "작품 제목을 입력해주세요");
+				br.addError(fe);		
+				mav.addObject("novel", novel);
+				mav.addObject("BODY", "modiNovel.jsp");
+				return mav;
+			}
+			if(novel.getDescription().equals("")) {
+				FieldError fe = new FieldError("regiNovel.jsp", "description", "작품 설명을 입력해주세요");
+				br.addError(fe);		
+				mav.addObject("BODY", "modiNovel.jsp");
+				return mav;
+			}
+			
+			
+
+			MultipartFile multiFile= novel.getImageFile();
+			
+			String fileName=null; String path=null;
+			OutputStream os=null;
+			
+			
+				
+				fileName=multiFile.getOriginalFilename();
+				if(! fileName.equals("")) {
+				ServletContext ctx=session.getServletContext();
+				path=ctx.getRealPath("/upload/"+fileName);
+				System.out.println("업로드경로:"+path);
+				try {
+					os=new FileOutputStream(path);
+					BufferedInputStream bis =
+						new BufferedInputStream(
+							multiFile.getInputStream());
+					byte[] buffer = new byte[8156];
+					int read = 0;
+					while( (read=bis.read(buffer))>0) {
+						os.write(buffer,0,read);
+					}
+					if(os != null) os.close();
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+				novel.setImage(fileName);
+			}//작가가 표지를 선택한 경우
+			
+			sn.modifyNovel(novel);
+			mav.setViewName("modiResultPage");
+		
+			return mav;
+		
+		
+	}
+	
+	//삭제(블라인드 처리)
+	@RequestMapping(value="/novel/deleteNovel.html")
+	public ModelAndView deleteNovel(Integer deleteNovelId) {
+		sn.deleteNovel(deleteNovelId);
+		ModelAndView mav = new ModelAndView("deleteResultPage");
+				
+		return mav;
+		
+	}
+	
+	
 	@RequestMapping(value="/novel/regiEpi.html")
 	public ModelAndView regiEpi(Novel_board novel_board, BindingResult br, String finish) {
 		ModelAndView mav = new ModelAndView("main");
@@ -292,58 +290,80 @@ public class NovelController {
 //		return mav;
 //	}
 //	
-//	@RequestMapping(value="/novel/likey.html")
-//	public ModelAndView likey(HttpSession session, Integer bno, String writerEmail, Integer epi_number, Integer pni) {
-//
-//		ModelAndView mav = new ModelAndView("likeyResult");
-//		mav.addObject("bno", bno);
-//		mav.addObject("epi_number", epi_number);
-//		mav.addObject("pni", pni);
-//		
-//		
-//		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
-//		Likey l = new Likey();
-//		l.setEmail(loginuser.getEmail());
-//		l.setLikey_bno(bno);
-//			
-//		
-//		Integer likeyAlready = sn.likeyCheck(l);
-//		if(likeyAlready==0) {
-//			
-//			Integer seqno = sn.maxLikeySeqno();
-//			if(seqno==null)seqno=0;
-//			
-//			l.setSeqno(seqno+1);
-//			
-//			sn.likey(l);
-//		
-//			//novel게시판에 추천수 (reco_point)만큼 증가 -로그인 시 세션에 랭크객체가 저장되어있다-
-//			
-//			RankCondition rank = (RankCondition)session.getAttribute("memberRank");
-//			LikeyCondition lc = new LikeyCondition();
-//			lc.setBno(bno);
-//			lc.setReco_point(rank.getUr().getReco_point());
-//			sn.addLikey(lc);
-//			
-//			//추천(활동)했으니독자포인트 1증가
-//			sm.AddR_point(loginuser.getEmail());
-//			//추천받았으니 작가포인트 1증가
-//			sm.AddW_point(writerEmail);
-//			//점수 새로고침을 위해 로그인 시처럼 세션에 계급정보
-//			
-//			sm.rankProcess(loginuser, session);
-//		
-//			
-//			
-//			mav.addObject("likeyResult","OK");
-//			return mav;
-//			
-//		}else {
-//			mav.addObject("likeyResult","NOK");
-//			return mav;
-//		}
-//		
-//	}
+	@RequestMapping(value="/novel/likey.html")
+	public ModelAndView likey(HttpSession session, Integer bno, String writerEmail, Integer epi_number, Integer pni) {
+
+		ModelAndView mav = new ModelAndView("likeyResult");
+		mav.addObject("bno", bno);
+		mav.addObject("epi_number", epi_number);
+		mav.addObject("pni", pni);
+		
+		
+		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
+		Likey l = new Likey();
+		l.setEmail(loginuser.getEmail());
+		l.setLikey_bno(bno);
+			
+		
+		Integer likeyAlready = sn.likeyCheck(l);
+		if(likeyAlready==0) {
+			
+			Integer seqno = sn.maxLikeySeqno();
+			if(seqno==null)seqno=0;
+			
+			l.setSeqno(seqno+1);
+			
+			sn.likey(l);
+		
+			//novel게시판에 추천수 (reco_point)만큼 증가 -로그인 시 세션에 랭크객체가 저장되어있다-
+			
+			RankCondition rank = (RankCondition)session.getAttribute("memberRank");
+			LikeyCondition lc = new LikeyCondition();
+			lc.setBno(bno);
+			lc.setReco_point(rank.getUr().getReco_point());
+			sn.addLikey(lc);
+			
+			//추천(활동)했으니독자포인트 1증가
+			sm.AddR_point(loginuser.getEmail());
+			//추천받았으니 작가포인트 1증가
+			sm.AddW_point(writerEmail);
+			//점수 새로고침을 위해 로그인 시처럼 세션에 계급정보
+			
+			sm.rankProcess(loginuser, session);
+		
+			
+			
+			mav.addObject("likeyResult","OK");
+			return mav;
+			
+		}else {
+			mav.addObject("likeyResult","NOK");
+			return mav;
+		}
+		
+	}
+	
+	@RequestMapping(value="/novel/likey2.html")
+	public ModelAndView ajaxLikey(HttpSession session) {
+		Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
+		Likey l = new Likey();
+		l.setEmail(loginMember.getEmail());
+		l.setLikey_bno(likey_bno);
+		Integer likeyAlready = sn.likeyCheck(l);
+		if(likeyAlready==0) {
+			
+			Integer seqno = sn.maxLikeySeqno();
+			if(seqno==null)seqno=0;
+			
+			l.setSeqno(seqno+1);
+			
+			sn.likey(l);
+		
+		
+	}
+		return null;
+}
+	
 //	
 //	
 //	@RequestMapping(value="/novel/report.html")

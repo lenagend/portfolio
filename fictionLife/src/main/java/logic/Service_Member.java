@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
+import model.Admin;
 import model.Icon;
 import model.Member;
 import model.User_rank;
@@ -54,6 +55,6 @@ public interface Service_Member {
 	public String getR_icon_ImageByNickname(String nickname);
 
 	// 관리자
-	Integer adminLogin(String email);
+	Admin adminLogin(String email);
 
 }
