@@ -10,13 +10,16 @@
 <script type="text/javascript">
 
 if(${reportResult=='OK'}){
-	alert("정상적으로 신고 되었습니다");
-	location.replace("../home/loadReader.html?bno="+${bno}+"&pni="+${pni}+"&epi_number="+${epi_number});
+	self.close();
+	window.opener.reportResult(1);
+	
+	
+	
 	
 }else{
-	alert("이미 신고 한 글입니다");
-	location.replace("../home/loadReader.html?bno="+${bno}+"&pni="+${pni}+"&epi_number="+${epi_number});
-	
+
+	self.close();
+	window.opener.reportResult(2);
 }
 
 </script>

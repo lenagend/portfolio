@@ -74,15 +74,49 @@ $(document).ready(function() {
 
 	});
 		
-	})
+	});
 
+	
+	$(".reReplyForm").hide();
+	
 });
+
+function report() {
+	var popupX = (window.screen.width/2) - (200/2);
+	// 만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
+
+	var popupY= (window.screen.height/2) - (300/2);
+	// 만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
+	var url="../home/report.html?pid="+document.getElementById('pid').value+"&epiNum="+document.getElementById('epi_num').value+"&bno="+document.getElementById('bno').value;
+	window.open(url, "_blank", "width=450, height=200, left="+popupX+",top="+popupY);
+}
+
+function reReplyForm(rno){
+	$(".reReplyForm").hide();
+	$("#"+rno).show();
+	
+};
+
+function deleteRepl(rno){
+	$("#replyForm").attr("action", "../reply/deleteReply.html");
+	$("#deleteRno").val(rno);
+	$("#replyForm").submit();
+}
+
+function reportResult(result) {
+	if(result == 1){
+		alert("정상적으로 신고 되었습니다");
+	}else if (result == 2){
+		alert("이미 신고 한 글입니다");
+	}
+}
 </script>
 </head>
 <body>
 <input type="hidden" value="${EPISODE.bno }" id="bno">
 <input type="hidden" value="${parentNovel.email }" id="email">
-
+<input type="hidden" value="${EPISODE.epi_number }" id="epi_num">
+<input type="hidden" value="${parentNovel.id }" id="pid">
 <table>
 	<tr>
 		<td>
@@ -127,19 +161,10 @@ $(document).ready(function() {
 	<c:if test="${sessionScope.LOGINMEMBER != null }"><!-- 로그인 유저만 -->
 		
 		<button id="favoriteBtn">관심작품</button>
-		<a href="../novel/favorite.html?novelId=${parentNovel.id }&writer=${parentNovel.email}">관심작품</a>
 		<button id="likeyBtn" >좋아요</button>
-		<a href="#reportForm" onclick="reportForm();">신고</a>
-		<div id="reportForm">
-		<form action="../novel/report.html?bno=${EPISODE.bno }" method="post">
+		<button id="reportBtn" onclick="report()">신고</button>
 		
-		<input  type="text" name="reportTitle" maxlength="100" value="불량 게시글 신고합니다"><br/>
-		<textarea rows="3" cols="60"  name="reportContent">꼭 확인 부탁드립니다</textarea><br/>
-		<input style="width: 30%;" type="submit" value="신고">
-		<input type="hidden" name="epi_number" value="${EPISODE.epi_number }">
-		<input type="hidden" name="pni" value="${parentNovel.id  }">
-		</form>
-		</div>
+	
 		
 		<form id="replyForm" action="../reply/reply.html" method="post">
 		<input type="hidden" name="epi_number" value="${EPISODE.epi_number }">
@@ -298,34 +323,5 @@ $(document).ready(function() {
 </div>
 </c:if>
 
-
-<script type="text/javascript">
-$(document).ready(function() {
-	$("#reportForm").hide();
-	$(".reReplyForm").hide();
-
-});
-function reportForm(){
-	$("#reportForm").show();
-	
-};
-function reReplyForm(rno){
-	$(".reReplyForm").hide();
-	$("#"+rno).show();
-	
-};
-
-function deleteRepl(rno){
-	$("#replyForm").attr("action", "../reply/deleteReply.html");
-	$("#deleteRno").val(rno);
-	$("#replyForm").submit();
-}
-
-</script>
-
-<br/>
-<br/>
-<br/>
-<br/>
 </body>
 </html>

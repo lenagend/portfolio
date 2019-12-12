@@ -214,6 +214,36 @@ insert into favorite(email, novel_id)
 update novel set favorite_num = favorite_num+1 where id=#{value}
 </update>
 
+<select id="countMyFavorite" resultType="Integer">
+select count(novel_id) from favorite where email= #{value}
+</select>
+
+<select id="getMyFavorite" resultType="model.Novel">
+
+SELECT * FROM novel WHERE id IN (SELECT novel_id FROM favorite WHERE email = #{email}) order by epi_regi_date desc
+LIMIT #{startRow}, #{endRow}
+</select>
+
+<update id="minusFavorite">
+update novel set FAVORITE_NUM = FAVORITE_NUM -1 where id=#{value} and favorite_num>0
+</update>
+
+<delete id="deleteMyFavorite">
+delete from favorite where email= #{email} and novel_id=#{novel_id}
+
+</delete>
+
+<!-- 유저신고 -->
+<select id="cherkReportAlready" resultType="Integer">
+select count(*) from report_novel where email=#{email} and r_bno=#{r_bno}
+</select>
+
+<insert id="insertReport">
+insert into report_novel(email, r_bno, title, content, novel_id, epi)
+ values(#{email},#{r_bno},#{title},#{content}, #{novel_id}, #{epi})
+</insert>
+
+
 </mapper>
 
 

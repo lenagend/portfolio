@@ -149,7 +149,7 @@ color: #cc0000;
 						<tr>
 							<td>
 							<img alt="" src="../rank_icon/${cnt.w_icon_image}" width="16" height="16">
-								${cnt.nickname } 작가님&nbsp;
+								${cnt.member.nickname } 작가님&nbsp;
 							</td>
 							<td><span id="Text_upload">${cnt.episode }화 업로드!!</span></td>
 						</tr>

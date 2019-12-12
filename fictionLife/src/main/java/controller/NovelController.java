@@ -27,6 +27,7 @@ import model.Likey;
 import model.Member;
 import model.Novel;
 import model.Novel_board;
+import model.Report_novel;
 
 @Controller
 public class NovelController {
@@ -293,28 +294,28 @@ public class NovelController {
 	}
 	
 	
-//	@RequestMapping(value="/novel/deleteFavorite.html")
-//	public ModelAndView deleteFavorite(HttpSession session, Integer novelId) {
-//
-//		ModelAndView mav = new ModelAndView("favoriteResult");
-//		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
-//		Favorite f = new Favorite();
-//		f.setEmail(loginuser.getEmail());
-//		f.setNovel_id(novelId);
-//		
-//			sn.deleteMyFavorite(f);
-//		
-//			//novel게시판에 선호작수 1회제거
-//			sn.minusFavorite(novelId);
-//			
-//			
-//			mav.addObject("favoriteResult","DELETE");
-//			return mav;
-//	
-//		
-//	}
-//	
-//	
+	@RequestMapping(value="/novel/deleteFavorite.html")
+	public ModelAndView deleteFavorite(HttpSession session, Integer novelId) {
+
+		ModelAndView mav = new ModelAndView("favoriteResult");
+		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
+		Favorite f = new Favorite();
+		f.setEmail(loginuser.getEmail());
+		f.setNovel_id(novelId);
+		
+			sn.deleteMyFavorite(f);
+		
+			//novel게시판에 선호작수 1회제거
+			sn.minusFavorite(novelId);
+			
+			
+			mav.addObject("favoriteResult","DELETE");
+			return mav;
+	
+		
+	}
+	
+	
 //	@RequestMapping(value="/novel/modifyEpi.html")
 //	public ModelAndView modifyEpi(Novel_board novel_board, BindingResult br) {
 //		ModelAndView mav = new ModelAndView("main");
@@ -344,53 +345,48 @@ public class NovelController {
 
 //	
 //	
-//	@RequestMapping(value="/novel/report.html")
-//	public ModelAndView report(HttpSession session, Integer bno, String reportTitle, String reportContent
-//			,Integer epi_number, 
-//			Integer pni) {
-//
-//		ModelAndView mav = new ModelAndView("reportResult");
-//		mav.addObject("bno", bno);
-//		mav.addObject("epi_number",epi_number);
-//		mav.addObject("pni",pni);
-//		
-//		System.out.println("bno"+ bno);
-//		System.out.println("epi_number"+ epi_number);
-//		System.out.println("pni"+ pni);
-//		
-//		
-//		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
-//		Report_novel rn = new Report_novel();
-//		rn.setSeqno(sn.maxReportSeqno()+1);
-//		rn.setEmail(loginuser.getEmail());
-//		rn.setTitle(reportTitle);
-//		rn.setContent(reportContent);
-//		rn.setR_bno(bno);
-//		rn.setNovel_id(pni);
-//		rn.setEpi(epi_number);
-//		Integer check = sn.cherkReportAlready(rn);
-//		if(check==0) {
-//			//아직신고 안한글. 인설트
-//			sn.insertReport(rn);
-//			mav.addObject("reportResult", "OK");
-//			
-//		}else {
-//			//이미 신고 한 글
-//			
-//			mav.addObject("reportResult", "NOK");
-//		}
-//		
-//		
-//		return mav;
-//	
-//		
-//	}
-//
-//	
-//
-//	
-//	
-//	
-//	
-//
+	@RequestMapping(value="/novel/report.html")
+	public ModelAndView report(HttpSession session, Integer bno, String reportTitle, String reportContent
+			,Integer epi_number, 
+			Integer pni) {
+
+		ModelAndView mav = new ModelAndView("reportResult");
+		mav.addObject("bno", bno);
+		mav.addObject("epi_number",epi_number);
+		mav.addObject("pni",pni);
+
+		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
+		Report_novel rn = new Report_novel();
+		
+		rn.setEmail(loginuser.getEmail());
+		rn.setTitle(reportTitle);
+		rn.setContent(reportContent);
+		rn.setR_bno(bno);
+		rn.setNovel_id(pni);
+		rn.setEpi(epi_number);
+		Integer check = sn.cherkReportAlready(rn);
+		if(check==0) {
+			//아직신고 안한글. 인설트
+			sn.insertReport(rn);
+			mav.addObject("reportResult", "OK");
+			
+		}else {
+			//이미 신고 한 글
+			
+			mav.addObject("reportResult", "NOK");
+		}
+		
+		
+		return mav;
+	
+		
+	}
+
+	
+
+	
+	
+	
+	
+
 }
