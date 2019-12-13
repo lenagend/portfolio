@@ -51,9 +51,9 @@ public class RankDaoImpl implements RankDao {
 	}
 
 	
-	public String getR_icon_ImageByNickname(String nickname) {
+	public String getR_icon_ImageByEmail(String email) {
 		
-		return session.selectOne(MAPPER+"getR_icon_ImageByNickname", nickname);
+		return session.selectOne(MAPPER+"getR_icon_ImageByEmail", email);
 	}
 	
     public String getW_icon_ImageByEmail(String email) {

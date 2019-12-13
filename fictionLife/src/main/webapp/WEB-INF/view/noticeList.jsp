@@ -58,7 +58,7 @@
 			<c:if test="${cnt.blind != 'yes' }">			
 			<tr>
 				<td>${cnt.bno }</td>
-				<td><a href="../home/loadNoticeReader.html?content=${cnt.content }">${cnt.title }</a></td>
+				<td><a href="../home/loadNoticeReader.html?bno=${cnt.bno} ">${cnt.title }</a></td>
 				<td>${cnt.member.nickname }</td>
 				<td>${cnt.regi_date }
 				<c:if test="${LOGINMEMBER.nickname == cnt.member.nickname }">

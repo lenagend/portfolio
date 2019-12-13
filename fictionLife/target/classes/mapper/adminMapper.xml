@@ -4,7 +4,7 @@
 <mapper namespace="mapper.adminMapper">
 <select id="getLatestNotice" resultType="model.Notice_board">
 
-select * from notice_board where blind = 'no' order by bno desc limit 0,3
+select bno, title, regi_date, email from notice_board where blind = 'no' order by bno desc limit 0,3
 </select>
 <!-- 신고글 총량 -->
 <select id="countReport" resultType="Integer">
@@ -33,10 +33,16 @@ select count(bno) from notice_board where blind != 'yes'
 <!-- 공지 가져오기 -->
 <select id="getNoticeList" resultType="model.Notice_board">
 
-select * from notice_board where blind !='yes' order by bno desc limit #{startRow}, #{endRow}
+select bno, title, regi_date, email
+ from notice_board where blind !='yes' order by bno desc limit #{startRow}, #{endRow}
 
 
 </select>
+<select id="getNoticeContent" resultType="model.Notice_board">
+select * from notice_board where bno = #{bno}
+
+</select>
+
 
 <!-- 블라인드들 -->
 <update id="userBlind">

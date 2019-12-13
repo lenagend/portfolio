@@ -79,4 +79,8 @@ public class Service_Admin_Impl implements Service_Admin {
 		ad.modifyNotice(nb);
 		
 	}
+	public Notice_board getNoticeContent(Integer bno) {
+		
+		return ad.getNoticeContent(bno);
+	}
 }

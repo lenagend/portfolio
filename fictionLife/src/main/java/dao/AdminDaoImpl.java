@@ -80,4 +80,8 @@ public class AdminDaoImpl implements AdminDao {
 	public void modifyNotice(Notice_board nb) {
 		session.update("mapper.adminMapper.modifyNotice", nb);
 	}
+	public Notice_board getNoticeContent(Integer bno) {
+		
+		return session.selectOne("mapper.adminMapper.getNoticeContent",bno);
+	}
 }

@@ -119,8 +119,8 @@ LIMIT #{startRow} , #{endRow}
 <select id="findTop1Novel" resultType="model.Novel">
 
 
-SELECT * FROM novel WHERE email = (
-SELECT * FROM 
+SELECT id, image FROM novel WHERE email = (
+SELECT email FROM 
 (SELECT email FROM user_rank ORDER by w_point DESC LIMIT 0,1)AS ur_tbl) 
 ORDER BY regi_date LIMIT 0,1
 
@@ -130,8 +130,8 @@ ORDER BY regi_date LIMIT 0,1
 <select id="findTop2Novel" resultType="model.Novel">
 
 
-SELECT * FROM novel WHERE email = (
-SELECT * FROM 
+SELECT id, image FROM novel WHERE email = (
+SELECT email FROM 
 (SELECT email FROM user_rank ORDER by w_point DESC LIMIT 1,1)AS ur_tbl) 
 ORDER BY regi_date LIMIT 0,1
 
@@ -140,8 +140,8 @@ ORDER BY regi_date LIMIT 0,1
 <select id="findTop3Novel" resultType="model.Novel">
 
 
-SELECT * FROM novel WHERE email = (
-SELECT * FROM 
+SELECT id, image FROM novel WHERE email = (
+SELECT email FROM 
 (SELECT email FROM user_rank ORDER by w_point DESC LIMIT 2,1)AS ur_tbl) 
 ORDER BY regi_date LIMIT 0,1
 
@@ -150,8 +150,8 @@ ORDER BY regi_date LIMIT 0,1
 <select id="findTop4Novel" resultType="model.Novel">
 
 
-SELECT * FROM novel WHERE email = (
-SELECT * FROM 
+SELECT id, image FROM novel WHERE email = (
+SELECT email FROM 
 (SELECT email FROM user_rank ORDER by w_point DESC LIMIT 3,1)AS ur_tbl) 
 ORDER BY regi_date LIMIT 0,1
 
@@ -160,8 +160,8 @@ ORDER BY regi_date LIMIT 0,1
 <select id="findTop5Novel" resultType="model.Novel">
 
 
-SELECT * FROM novel WHERE email = (
-SELECT * FROM 
+SELECT id, image FROM novel WHERE email = (
+SELECT email FROM 
 (SELECT email FROM user_rank ORDER by w_point DESC LIMIT 4,1)AS ur_tbl) 
 ORDER BY regi_date LIMIT 0,1
 
@@ -171,7 +171,7 @@ ORDER BY regi_date LIMIT 0,1
 <select id="findTop10NovelByReco_cnt" resultType="model.Novel">
 
 
-SELECT * FROM novel WHERE blind != 'yes' ORDER BY favorite_num LIMIT 0,5
+SELECT id, image FROM novel WHERE blind != 'yes' ORDER BY favorite_num LIMIT 0,5
 
 
 </select> 

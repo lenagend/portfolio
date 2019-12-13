@@ -21,6 +21,7 @@ import model.Member;
 import model.Notice_board;
 import model.Novel;
 import model.Novel_board;
+import model.Reply_novel;
 
 //1210 저녁 11시 2분 수정
 
@@ -371,47 +372,32 @@ public class HomeController {
 		sn.plusViewCnt(bno);
 		
 		
-//		//댓글 불러오기
-//
-//		Integer cnt = sn.countReplyByBno(bno);
-//		if(cnt==null) cnt=0;
-//		int startRow = 0; int endRow=0;int pageCnt=0;
-//		int currentPage=0;
-//		
-//		if(pageNo==null) currentPage =1;
-//		else currentPage = pageNo;
-//		
-//		if(cnt>0) {
-//			pageCnt = cnt/10;
-//			if(cnt % 10>0) pageCnt++;
-//			startRow = (currentPage-1)*10 +1;
-//			endRow = currentPage * 10;
-//			
-//			if(endRow > cnt) endRow = cnt;
-//			
-//		}
-//		PagingCondition c = new PagingCondition();
-//		c.setStartRow(startRow); c.setEndRow(endRow);c.setId(bno);
-//		
-//		List<Reply_novel> replyList = sn.getReplyList(c);
-//		//각 닉네임으로 아이콘을 찾아와야한다...
-//				if(replyList != null) {
-//					Iterator it = replyList.iterator();
-//					int i = 0;
-//					while(it.hasNext()) {
-//						Reply_novel ci =(Reply_novel)it.next();
-//						String r_icon_image= sm.getR_icon_ImageByNickname(ci.getNickname());  
-//						System.out.println("아이콘 이름: "+r_icon_image);
-//						ci.setR_icon_image(r_icon_image);
-//						i++;
-//					}
-//					
-//					
-//				}
-//				
-//				
-//		//
-//			
+		//댓글 불러오기
+
+		Integer cnt = sn.countReplyByBno(bno);
+		
+		PagingCondition c = new PagingCondition();
+		c.paging(cnt, pageNo, 10);c.setId(bno);
+		
+		List<Reply_novel> replyList = sn.getReplyList(c);
+		//각 닉네임으로 아이콘을 찾아와야한다...
+				if(replyList != null) {
+					Iterator it = replyList.iterator();
+					int i = 0;
+					while(it.hasNext()) {
+						Reply_novel ci =(Reply_novel)it.next();
+						String r_icon_image= sm.getR_icon_ImageByEmail(ci.getEmail());  
+						ci.setMember(sm.checkEmail(ci.getEmail()));
+						ci.setR_icon_image(r_icon_image);
+						i++;
+					}
+					
+					
+				}
+				
+				
+		//
+			
 //		
 //		//대댓글...
 //		List<Reply_novel> reReplyList = sn.getReREply(c);
@@ -434,15 +420,15 @@ public class HomeController {
 ////
 //		
 //		
-//		mav.addObject("REPLY_LIST", replyList);
+		mav.addObject("REPLY_LIST", replyList);
 //		
 //		mav.addObject("REREPLY_LIST", reReplyList);
 //		
-//		mav.addObject("COUNT", cnt);
-//		mav.addObject("pageCount",pageCnt);
-//		mav.addObject("startRow",startRow);
-//		mav.addObject("endRow",endRow);
-//		mav.addObject("currentPage",currentPage);
+		mav.addObject("COUNT", cnt);
+		mav.addObject("pageCount",c.getPageCnt());
+		mav.addObject("startRow",c.getStartRow());
+		mav.addObject("endRow",c.getEndRow());
+		mav.addObject("currentPage",c.getCurrentPage());
 		
 		mav.addObject("parentNovel", parentNovel);
 		mav.addObject("EPISODE", nb);
@@ -509,11 +495,12 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/home/loadNoticeReader.html")
-	public ModelAndView loadNoticeReader(String content) {
+	public ModelAndView loadNoticeReader(Integer bno) {
 		
 		ModelAndView mav = new ModelAndView("main");
+		Notice_board notice = sa.getNoticeContent(bno);
 		mav.addObject("BODY", "noticeReader.jsp");
-		mav.addObject("content", content);
+		mav.addObject("notice", notice);
 		return mav;
 		
 	}

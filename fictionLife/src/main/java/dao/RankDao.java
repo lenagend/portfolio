@@ -14,5 +14,5 @@ public void AddR_point(PointCondition pc);
 public void AddW_point(PointCondition pc);
 
 public String getW_icon_ImageByEmail(String email);
-public String getR_icon_ImageByNickname(String nickname);
+public String getR_icon_ImageByEmail(String email);
 }
