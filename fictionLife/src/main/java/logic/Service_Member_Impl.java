@@ -255,9 +255,9 @@ public class Service_Member_Impl implements Service_Member {
 
 	
 
-	public String getR_icon_ImageByNickname(String nickname) {
+	public String getR_icon_ImageByEmail(String email) {
 
-		return rankDao.getR_icon_ImageByNickname(nickname);
+		return rankDao.getR_icon_ImageByEmail(email);
 	}
 
 	public String getW_icon_ImageByEmail(String email) {

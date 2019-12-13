@@ -22,4 +22,5 @@ public Integer countNoticeBno();
 public List<Notice_board> getNoticeList(PagingCondition pc);
 public void deleteNotice(Integer bno);
 public void modifyNotice(Notice_board nb);
+public Notice_board getNoticeContent(Integer bno);
 }

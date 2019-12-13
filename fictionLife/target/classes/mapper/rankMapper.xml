@@ -32,6 +32,14 @@ where email=#{email}
 
 )
 </select>
+<select id="getR_icon_ImageByEmail" resultType="String">
+SELECT icon_image from icon 
+where icon_id = (
+select r_icon_id from user_rank 
+where email=#{email}
+
+)
+</select>
 <!-- 작가, 독자 점수올리기 -->
 <update id="AddR_point">
 update user_rank set r_point = r_point+#{point}  where email=#{email}

@@ -53,7 +53,7 @@ public interface Service_Member {
 
 	public String getW_icon_ImageByEmail(String email);
 
-	public String getR_icon_ImageByNickname(String nickname);
+	public String getR_icon_ImageByEmail(String email);
 
 	// 관리자
 	Admin adminLogin(String email);

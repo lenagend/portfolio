@@ -77,9 +77,7 @@ color black;
 </head>
 
 <body>
-<%String path = request.getSession().getServletContext().getRealPath("/");%>
-<%=path %>
-	
+
 	<div data-role="page">	
 		<div data-role="header"> <!-- 로고, 로그인 메뉴 -->
 			<div align="center">
@@ -211,7 +209,7 @@ color black;
 			<tbody>
 				<c:forEach items="${NOTICE_LIST }" var="notice"> 
 					<tr>
-						<td><a id="notice" href="../home/loadNoticeReader.html?content=${notice.content }">${notice.title }</a></td>
+						<td><a id="notice" href="../home/loadNoticeReader.html?bno=${notice.bno }">${notice.title }</a></td>
 						<td>${notice.member.nickname }</td>
 						<td>${notice.regi_date }</td>
 					</tr>

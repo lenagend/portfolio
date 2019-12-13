@@ -17,7 +17,6 @@ public class Reply_novel {
 	private Integer rno;
 	private Integer bno;
 	private String content;
-	private String nickname;
 	private String regi_date;
 	private String update_date;
 	private String blind;
@@ -25,6 +24,24 @@ public class Reply_novel {
 	private Integer parent_no;
 	private Integer order_no;
 	private Integer repl_cnt;
+	private String email;
+	private Member member;
+	
+	public Member getMember() {
+		return member;
+	}
+	
+	public void setMember(Member member) {
+		this.member = member;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 	private String r_icon_image;
 	
@@ -62,12 +79,7 @@ public class Reply_novel {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getNickname() {
-		return nickname;
-	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+
 	public String getRegi_date() {
 		return regi_date;
 	}
