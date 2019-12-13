@@ -47,7 +47,19 @@
 
 	<context:component-scan base-package="dao, logic, controller, model"></context:component-scan>
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven>
+    <mvc:message-converters>
+        <!-- @ResponseBody로 String 처리할때 한글처리ㅠㅠ -->
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+            <property name="supportedMediaTypes">
+                <list>
+                    <value>text/html;charset=UTF-8</value>
+                </list>
+            </property>
+        </bean>
+    </mvc:message-converters>
+</mvc:annotation-driven>
+
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
@@ -73,5 +85,6 @@
          </props>
       </property>
    </bean>
+
 </beans>
 	

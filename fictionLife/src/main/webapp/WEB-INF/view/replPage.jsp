@@ -10,17 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form id="replyForm" method="post">
-		<table style="background-color: #e9ecef">
-		<tr><td>
-		<input type="hidden" name="rno" id="deleteRno">
-		<textarea rows="3" cols="60" name="reply" id="reply" placeholder="댓글 입력..."></textarea>
-		</td></tr>
-		<tr><td>
-		<input style="width: 30%;" type="button" value="확인" id="replyBtn">
-		</td></tr>
-		</table>
-		</form>
+
 		
 		<c:if test="${ ! empty REPLY_LIST }">
 
@@ -45,7 +35,7 @@
 
 							<tr>
 								<td>
-									<table id="replTable">
+									<table id='replTable'>
 										<tr>
 											<td bgcolor="#66ccff"><img alt="" src="../rank_icon/${re.r_icon_image }" width="32" height="32">	${re.member.nickname}
 											${re.regi_date}
