@@ -358,10 +358,10 @@ public class HomeController {
 	
 	@RequestMapping(value="home/loadReply.html")
 	@ResponseBody
-	public HashMap<String, Object> loadReply(Integer bno, Integer pageNo, HttpServletResponse response) {
+	public String loadReply(Integer bno, Integer pageNo, HttpServletResponse response) {
 		
 		String result = "";
-		int amount = 10;
+		int amount = 30;
 		
 		
 		//댓글 불러오기
@@ -399,12 +399,8 @@ public class HomeController {
 					
 				}
 			
-				System.out.println("여까진오냐?");System.out.println("여까진오냐?");System.out.println("여까진오냐?");System.out.println("여까진오냐?");
-				System.out.println("여까진오냐?");System.out.println("여까진오냐?");System.out.println("여까진오냐?");System.out.println("여까진오냐?");
-		//만약 자료가 10꽉이면 더보기 링크 만들고 아니면 없앤다
-				HashMap<String, Object> resultMap = new HashMap<String, Object>();
-				resultMap.put("result", result);
-		return resultMap;
+		
+		return result;
 	}
 	
 	@RequestMapping(value="/home/loadReader.html")

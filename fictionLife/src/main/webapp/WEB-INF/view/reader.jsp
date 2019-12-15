@@ -110,9 +110,9 @@ $(document).ready(function() {
 			        data:{"bno": $("#bno").val()
 			        	
 			       	 },
-			       	 datatype:"JSON",
-			        success: function(resultMap) {
-			        	$('#replySpace').html(resultMap.result);
+			       	
+			        success: function(result) {
+			        	$('#replySpace').html(result);
 			        	$("#replyForm").show();
 			        }, error: function() {
 			            alert('오류');
