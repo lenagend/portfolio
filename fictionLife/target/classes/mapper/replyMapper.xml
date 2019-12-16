@@ -22,6 +22,10 @@ select * from reply_novel where bno=#{id} and parent_no = 0 order by rno desc LI
 
 </select>
 
+<update id="deleteReply">
+update reply_novel set content = #{content} where rno=#{rno}
+</update>
+
 </mapper>
 
 

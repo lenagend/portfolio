@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import condition.PointCondition;
 import logic.Service_Member;
@@ -90,26 +91,30 @@ public class ReplyController {
 //		return mav;
 //	}
 //	
-//	@RequestMapping(value="/reply/deleteReply.html")
-//	public ModelAndView deleteReply(Integer epi_number, Integer pni, Integer bno, Integer rno) {
-//		
-//		
-//		
-//		
-//		Reply_novel rn = new Reply_novel();
-//		Integer maxRno = sn.maxRno();
-//		if(maxRno == null) maxRno =0;
-//		
-//		rn.setRno(rno);
-//		rn.setContent("<font color='red'>삭제된 댓글입니다</font>");
-//	
-//		//db에서 업데이트
-//		sn.deleteReply(rn);
-//		
-//		ModelAndView mav = new ModelAndView("replyResult");
-//		mav.addObject("epi_number",epi_number);
-//		mav.addObject("pni",pni);
-//		mav.addObject("bno",bno);
-//		return mav;
-//	}
+	@RequestMapping(value="/reply/deleteReply.html")
+	@ResponseBody
+	public String deleteReply(Integer rno) {
+		
+		String result = "";
+		
+		
+		Reply_novel rn = new Reply_novel();
+		
+		
+		
+		rn.setRno(rno);
+		rn.setContent("<font color='red'>삭제된 댓글입니다</font>");
+	
+		//db에서 업데이트
+		try {
+			sn.deleteReply(rn);
+			
+			result="deleSuc";
+		}catch(Exception e) {
+			result="delefail";
+		}
+		
+	
+		return result;
+	}
 }

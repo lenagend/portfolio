@@ -47,19 +47,7 @@ color black;
   		padding-right: 1px;
 
 }
-#div_board{
 
-   width:510px;
-	    height:100%;
-	    margin-top:2%;
-	   
-  		padding-top: none;
-  		padding-bottom:  none;
-  		font-family: "Nanum Gothic", arial, helvetica, sans-serif;
-  		background-repeat: no-repeat;
-  		
-  		border: 1px solid black;
-}
 .imageContents{
 		 width:510px;
 	    height:100%;
@@ -74,30 +62,13 @@ color black;
 }
 
 </style>
-<script type="text/javascript">
-$(document).ready(function() {
-	$('#testBtn').click(function() {
-		$.ajax({
-	        type: "POST",
-	        url: "../test/vo.html",
-	      	dataType: 'json',
-	        success: function(json) {
-	        	
-	        	alert(json.name);
-	        }, error: function() {
-	            alert('오류');
-	        }
 
-	});
-	});
-});
-</script>
 </head>
 
 <body>
-<input type="button" id="testBtn" value="테스트">
+
 	<div data-role="page">	
-		<div data-role="header"> <!-- 로고, 로그인 메뉴 -->
+		<div id="page_first" data-role="header"> <!-- 로고, 로그인 메뉴 -->
 			<div align="center">
 			<table>
 				<tr>
@@ -241,40 +212,8 @@ $(document).ready(function() {
 			</div>
 			
 			
-			<div id="div_board" align="center"><!-- 연재게시판 -->
-				<table>
-					<tr>
-						<td><div align="left" class="menu"><a id="novel_board" href="#novel_board">#연재 게시판</a></div></td>
-					</tr>
-					<tr>
-						<td>완결:<img alt="" src="../cssImage/redLink.png" width="16" height="16">&nbsp;
-							미완:<img alt="" src="../cssImage/blueLink.png" width="16" height="16">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<c:choose>
-								<c:when test="${BOARD != null }">
-									<jsp:include page="${BOARD }"/>
-								</c:when>
-								<c:otherwise>
-									연재게시판은 아직 준비중입니다
-								</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-					<tr>
-						<td><div class="text_link">
-							<a href="../home/goMain.html">전체</a>&nbsp;&nbsp;
-							<a href="../home/goMain.html?novelType=판타지">판타지</a>&nbsp;&nbsp;
-							<a href="../home/goMain.html?novelType=무협">무협</a>&nbsp;&nbsp;
-							<a href="../home/goMain.html?novelType=로맨스">로맨스</a>&nbsp;&nbsp;
-							<a href="../home/goMain.html?novelType=기타">기타</a>
-						</div>
-						</td>						
-				
-					</tr>
-				</table>
+			<div class="div_board" align="center"><!-- 연재게시판 -->
+				<jsp:include page="novelBoard.jsp"></jsp:include>
 			</div>		
 			</c:when>
 			<c:otherwise>

@@ -43,7 +43,7 @@ public class HomeController {
 	private Service_Admin sa;
 
 	@RequestMapping(value="/home/goMain.html")
-	public ModelAndView goMain(Integer pageNo, HttpSession session, String novelType, String search){
+	public ModelAndView goMain(HttpSession session){
 		//랭크업데이트
 		Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
 		if(loginMember!=null) {
@@ -53,39 +53,16 @@ public class HomeController {
 		
 		ModelAndView mav = new ModelAndView("main");
 		Integer cnt = 0;
-		if(novelType!= null) {
-			cnt= sn.countTypeNovelList(novelType);
+		cnt = sn.countNovelList();
 		
-		}else if(search!=null){
-		
-			cnt = sn.countSearchNovel(search);
-		}else {
-			cnt = sn.countNovelList();
-		
-		}
+	
 
 		PagingCondition c = new PagingCondition();
-		c.paging(cnt, pageNo, 5);
+		c.paging(cnt, 1, 5);
 
 		List<Novel> allNovelList;
-
-		if(novelType!=null) {
-			c.setType(novelType);
-			allNovelList = sn.findNovelByType(c);
-			
-		}else if(search!=null) {
-			c.setSearch(search);
-			allNovelList = sn.getSearchNovel(c);
-			if(allNovelList.isEmpty()) {
-				mav.addObject("searchResult", "noResult");
-			}
-			
-			
-			}
+		allNovelList = sn.findAllNovel(c);
 		
-		else {
-			allNovelList = sn.findAllNovel(c);
-		}
 		
 		//각 닉네임으로 아이콘을 찾아와야한다...
 		if(allNovelList != null) {
@@ -142,8 +119,72 @@ public class HomeController {
 		mav.addObject("endRow",c.getEndRow());
 		mav.addObject("currentPage",c.getCurrentPage());
 		mav.addObject("BODY", null);
-		mav.addObject("BOARD", "novelBoard.jsp");
+		
 
+		return mav;
+	}
+	
+	@RequestMapping(value="/home/playBoard.html")
+	public ModelAndView playBoard(Integer pageNo,String novelType, String search ) {
+		ModelAndView mav = new ModelAndView("main");
+		Integer cnt = 0;
+		
+		if(novelType!= null) {
+			cnt= sn.countTypeNovelList(novelType);
+		
+		}else if(search!=null){
+		
+			cnt = sn.countSearchNovel(search);
+		}else {
+			cnt = sn.countNovelList();
+		
+		}
+		PagingCondition c = new PagingCondition();
+		c.paging(cnt, pageNo, 10);
+
+		List<Novel> allNovelList;
+
+		if(novelType!=null) {
+			c.setType(novelType);
+			allNovelList = sn.findNovelByType(c);
+			
+		}else if(search!=null) {
+			c.setSearch(search);
+			allNovelList = sn.getSearchNovel(c);
+			if(allNovelList.isEmpty()) {
+				mav.addObject("searchResult", "noResult");
+			}
+			
+			
+			}
+		
+		else {
+			allNovelList = sn.findAllNovel(c);
+		}
+		//각 닉네임으로 아이콘을 찾아와야한다...
+				if(allNovelList != null) {
+					Iterator it = allNovelList.iterator();
+					int i = 0;
+					while(it.hasNext()) {
+						Novel ci =(Novel)it.next();
+						ci.setMember(sm.checkEmail(ci.getEmail()));
+						String w_icon_image= sm.getW_icon_ImageByEmail(ci.getEmail());  
+						
+						ci.setW_icon_image(w_icon_image);
+						i++;
+					}
+					
+					
+				}
+				
+				mav.addObject("NOVEL_LIST", allNovelList);
+				mav.addObject("COUNT", cnt);
+				mav.addObject("pageCount", c.getPageCnt());
+				mav.addObject("startRow",c.getStartRow());
+				mav.addObject("endRow",c.getEndRow());
+				mav.addObject("currentPage",c.getCurrentPage());
+				mav.addObject("BODY", "novelBoard.jsp");
+						
 		return mav;
 	}
 //
@@ -376,6 +417,7 @@ public class HomeController {
 		c.paging(cnt, pageNo, 10);c.setId(bno);
 		
 		List<Reply_novel> replyList = sn.getReplyList(c);
+		System.out.println("List사이즈 : "+replyList.size());
 		Gson gson = new Gson();
 		
 		JsonArray array = new JsonArray();
@@ -385,9 +427,19 @@ public class HomeController {
 			int i = 0;
 			while (it.hasNext()) {
 				JsonObject object = new JsonObject();
+				if(cnt > (c.getCurrentPage()*10)) {
+					object.addProperty("endPage", "no");
+					
+				}
+				else {
+				
+					object.addProperty("endPage", "yes");
+					
+				}
 				Reply_novel ci = (Reply_novel) it.next();
 				String r_icon_image = sm.getR_icon_ImageByEmail(ci.getEmail());
 				ci.setMember(sm.checkEmail(ci.getEmail()));
+				object.addProperty("rno", ci.getRno());
 				object.addProperty("nickname", ci.getMember().getNickname());
 				object.addProperty("regiDate", ci.getRegi_date());
 				object.addProperty("content", ci.getContent());
@@ -399,12 +451,6 @@ public class HomeController {
 					
 				}
 	
-		if(replyList.size()==10) {
-			JsonObject object = new JsonObject();
-			object.addProperty("endPage", "no");
-			array.add(object);
-		}
-			
 		
 		
 		String json = gson.toJson(array);
@@ -435,10 +481,10 @@ public class HomeController {
 		//댓글 불러오기
 
 		Integer cnt = sn.countReplyByBno(bno);
-//		
-//		PagingCondition c = new PagingCondition();
-//		c.paging(cnt, pageNo, 10);c.setId(bno);
-//		
+		
+		PagingCondition c = new PagingCondition();
+		c.paging(cnt, pageNo, 10);c.setId(bno);
+		
 //		List<Reply_novel> replyList = sn.getReplyList(c);
 //		//각 닉네임으로 아이콘을 찾아와야한다...
 //				if(replyList != null) {

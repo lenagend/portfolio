@@ -33,9 +33,10 @@ width: 450px;
 }
 </style>
 <script type="text/javascript">
+var replPageNo = 1;
 $(document).ready(function() {
 	
-	var replPageNo = 1;
+	
 	
 	//좋아요
 	$('#likeyBtn').click(function() {
@@ -85,7 +86,7 @@ $(document).ready(function() {
 
 	$("#replyForm").hide();
 	$("#CallMoreRepl").click(function() {
-		replPageNo+1;
+		replPageNo+=1;
 		
 		$.ajax({
 	        type: "POST",
@@ -94,14 +95,15 @@ $(document).ready(function() {
 	        	"pageNo": replPageNo,
 	        	
 	       	 },
-	       	 
+	      	dataType:"json",
 	        success: function(json) {
 	        	$('#replySpace').append(replyList(json));
 	        	$("#replyForm").show();
-	        	if(json[10].endPage =='no'){
+	        	if(json[0].endPage =='no'){
 	        		$("#CallMoreRepl").show();
 	        	}else{
 	        		$("#CallMoreRepl").hide();
+	        		$('#replySpace').append("<span style='font-size: 2em;'><a href='#page_first'>#마지막 댓글입니다</a></span>");
 	        	}
 	        }, error: function() {
 	            alert('오류');
@@ -123,7 +125,7 @@ $(document).ready(function() {
 			        success: function(json) {
 			        	$('#replySpace').html(replyList(json));
 			        	$("#replyForm").show();
-			        	if(json[10].endPage =='no'){
+			        	if(json[0].endPage =='no'){
 			        		$("#CallMoreRepl").show();
 			        	}
 			        }, error: function() {
@@ -151,16 +153,22 @@ $('#replyBtn').click(function() {
 	           	},
 	            success: function(result) {
 	           	 if(result == 'replSuc'){
+	           		replPageNo =1;
 	           		$('#reply').val('');
 	           		$('#replySpace').empty();
 	           		$.ajax({
 				        type: "POST",
 				        url: "../home/loadReply.html",
 				        data:{"bno": $("#bno").val()
+				        	
 				       	 },
-				       	 
+				       	dataType:"json",
 				        success: function(json) {
-				        	$('#replySpace').html(result);
+				        	$('#replySpace').html(replyList(json));
+				        	$("#replyForm").show();
+				        	if(json[0].endPage =='no'){
+				        		$("#CallMoreRepl").show();
+				        	}
 				        }, error: function() {
 				            alert('오류');
 				        }
@@ -181,7 +189,6 @@ $('#replyBtn').click(function() {
 		
 	});//댓글
 
-	
 });
 
 function report() {
@@ -216,12 +223,19 @@ function reportResult(result) {
 
 function replyList(json){
 	var result = '';
-	
-	for(var i = 0; i<10; i++){		
-		result += "<table id='replTable'>";
+    var loginNick = '${LOGINMEMBER.nickname}';
+
+	for(var i=0, item; item=json[i]; i++){		
+		result += "<table id='replTable' style='font-size:1.5em;'>";
 		result+="<tr>";
 		result+="<td bgcolor='#66ccff'>";
-		result+="<img src='../rank_icon/"+json[i].iconImage+"'width='32' height='32'>"+json[i].nickname+'&nbsp;'+json[i].regiDate;
+		result+="<img src='../rank_icon/"+json[i].iconImage+"'width='32' height='32'/>"+json[i].nickname+'&nbsp;'+json[i].regiDate;
+	
+		if(loginNick == json[i].nickname && json[i].content != '삭제된 댓글입니다'){
+			
+			result+="<a onClick='deleRepl("+json[i].rno+");'>삭제</a>";
+		}
+		
 		result+="</td>";
 		result+="<tr>";
 		result+="<td>";
@@ -236,7 +250,51 @@ function replyList(json){
 	return result;
 }
 
+function deleRepl(rno){
+	replPageNo =1;
+	
+	$.ajax({
+        type: "POST",
+        url: "../reply/deleteReply.html",
+        data:{"rno": rno
+       	
+       	},
+        success: function(result) {
+       	 if(result == 'deleSuc'){
+       		
+       		$('#reply').val('');
+       		$('#replySpace').empty();
+       		$.ajax({
+		        type: "POST",
+		        url: "../home/loadReply.html",
+		        data:{"bno": $("#bno").val()
+		        	
+		       	 },
+		       	dataType:"json",
+		        success: function(json) {
+		        
+		        	$('#replySpace').html(replyList(json));
+		        	$("#replyForm").show();
+		        	if(json[0].endPage =='no'){
+		        		$("#CallMoreRepl").show();
+		        	}
+		        }, error: function() {
+		            alert('댓글 불러오기 오류');
+		        }
 
+		});
+       	 }else if (result == 'deleFail'){
+       		 alert('삭제실패');
+       	 }
+           
+           
+        }, error: function() {
+            alert('삭제오류');
+        }
+
+});
+	
+}
 </script>
 </head>
 <body>
@@ -248,7 +306,7 @@ function replyList(json){
 	<tr>
 		<td>
 			<!-- 작품제목 , 시리즈뷰 -->
-			<a href="../home/loadSeries.html?novelId=${parentNovel.id }">${parentNovel.title}</a>
+			<a style="font-size: 1.2em;" href="../home/loadSeries.html?novelId=${parentNovel.id }">${parentNovel.title}</a>
 		</td>
 	</tr>
 	<tr>
@@ -256,7 +314,7 @@ function replyList(json){
 			<c:if test="${EPISODE.epi_number >1 }">
 				<a href="../home/loadReader.html?epi_number=${EPISODE.epi_number - 1 }&pni=${parentNovel.id}&bno=${EPISODE.bno}">◀</a>&nbsp;
 			</c:if>		
-			<!-- 에피소드 제목 -->${EPISODE.epi_number}화, ${EPISODE.epi_title }&nbsp;
+			<!-- 에피소드 제목 --><span style="font-size: 1.2em;">${EPISODE.epi_number}화, ${EPISODE.epi_title }</span>&nbsp;
 			<c:if test="${EPISODE.epi_number < parentNovel.episode}">
 				<a href="../home/loadReader.html?epi_number=${EPISODE.epi_number + 1 }&pni=${parentNovel.id}&bno=${EPISODE.bno}">▶</a>&nbsp;
 			</c:if>	
@@ -266,7 +324,7 @@ function replyList(json){
 	<tr>
 	
 		<td>
-			<textarea autofocus="autofocus" cols="70" rows="100" readonly="readonly">${EPISODE.content }</textarea>
+			<textarea style="font-size: 1.5em;" autofocus="autofocus" cols="80" rows="100" readonly="readonly">${EPISODE.content }</textarea>
 	</td>
 	</tr>
 	

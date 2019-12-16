@@ -27,18 +27,48 @@ font-size: 110%;
 color: #cc0000;
 }
 
+#div_playBoard{
 
+ 		  width:510px;
+	    height:100%;
+	    margin-top:2%;
+	   
+  		padding-top: none;
+  		padding-bottom:  none;
+  		font-family: "Nanum Gothic", arial, helvetica, sans-serif;
+  		background-repeat: no-repeat;
+  		
+  		border: 1px solid black;
+}
 
 </style>
+
 </head>
 <body>
+<div id="div_playBoard">
 <c:if test="${searchResult == 'noResult' }">
 <script type="text/javascript">
 alert("검색 결과가 없습니다");
 location.replace("../home/goMain.html");
 </script>
+
 </c:if>
-<c:if test="${empty NOVEL_LIST }">
+
+
+<table>
+					<tr>
+						<td><div align="left" class="menu"><a id="novel_board" href="#novel_board">#연재 게시판</a></div></td>
+					</tr>
+					<tr>
+						<td>완결:<img alt="" src="../cssImage/redLink.png" width="16" height="16">&nbsp;
+							미완:<img alt="" src="../cssImage/blueLink.png" width="16" height="16">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+							
+									<c:if test="${empty NOVEL_LIST }">
 망한 홈페이진가봅니다 ㅠㅠ  아직 아무도 소설을 등록하지 않았습니다...
 </c:if>
 
@@ -56,7 +86,7 @@ location.replace("../home/goMain.html");
 	<tr>
 	<td>
 		<c:if test="${currentPage > 1 }">
-						<a href="../home/goMain.html?pageNo=${currentPage -1 }"><img alt="" src="../cssImage/prev.png" width="32" height="32"></a>
+						<a href="../home/playBoard.html?pageNo=${currentPage -1 }"><img alt="" src="../cssImage/prev.png" width="32" height="32"></a>
 		</c:if>
 	</td>
 	<td>
@@ -108,7 +138,7 @@ location.replace("../home/goMain.html");
 	</td>
 	<td>
 		<c:if test="${currentPage < pageCount }">
-						<a href="../home/goMain.html?pageNo=${currentPage +1 }"><img alt="" src="../cssImage/next.png" width="32" height="32"></a>
+						<a href="../home/playBoard.html?pageNo=${currentPage +1 }"><img alt="" src="../cssImage/next.png" width="32" height="32"></a>
 		</c:if>
 	</td>
 	</tr>
@@ -124,19 +154,19 @@ location.replace("../home/goMain.html");
 		<br/>
 
 <c:if test="${startPage > 10 }">
-<a href="../home/goMain.html?pageNo=${startPage -1 }">[10전]</a>
+<a href="../home/playBoard.html?pageNo=${startPage -1 }">[10전]</a>
 </c:if>
 
 <c:forEach var="pageNo" begin="${startPage}" 
 						end="${endPage }">
 	<c:if test="${pageNo == currentPage }">
 		<font size="110%">
-		<a href="../home/goMain.html?pageNo=${pageNo }">${pageNo }</a>
+		<a href="../home/playBoard.html?pageNo=${pageNo }">${pageNo }</a>
 		</font>
 	</c:if>
 	
 	<c:if test="${pageNo != currentPage }">
-		<a href="../home/goMain.html?pageNo=${pageNo }">${pageNo }</a>
+		<a href="../home/playBoard.html?pageNo=${pageNo }">${pageNo }</a>
 	</c:if>
 </c:forEach>
 
@@ -144,15 +174,44 @@ location.replace("../home/goMain.html");
 
 
 <c:if test="${endPage < pageCount }">
-<a href="../home/goMain.html?pageNo=${endPage +1 }">[10후]</a>
+<a href="../home/playBoard.html?pageNo=${endPage +1 }">[10후]</a>
 </c:if>
 
 
-<a href="../home/goMain.html?pageNo=${pageCount}">[마지막]</a>
+<a href="../home/playBoard.html?pageNo=${pageCount}">[마지막]</a>
 
 <br/>
 
 </div>
 </c:if>
+								
+							
+							
+						</td>
+					</tr>
+					<tr>
+						<td align="center"><div class="text_link">
+							<a href="../home/playBoard.html">전체</a>&nbsp;&nbsp;
+							<a href="../home/playBoard.html?novelType=판타지">판타지</a>&nbsp;&nbsp;
+							<a href="../home/playBoard.html?novelType=무협">무협</a>&nbsp;&nbsp;
+							<a href="../home/playBoard.html?novelType=로맨스">로맨스</a>&nbsp;&nbsp;
+							<a href="../home/playBoard.html?novelType=기타">기타</a>
+						</div>
+						</td>						
+				
+					</tr>
+				</table>
+
+
+
+
+
+
+
+
+
+
+
+</div>
 </body>
 </html>
