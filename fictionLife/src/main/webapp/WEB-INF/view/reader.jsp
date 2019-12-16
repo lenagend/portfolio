@@ -91,7 +91,7 @@ $(document).ready(function() {
 	        type: "POST",
 	        url: "../home/loadReply.html",
 	        data:{"bno": $("#bno").val(),
-	        	"pageNo": replPageNo.val(),
+	        	"pageNo": replPageNo,
 	        	
 	       	 },
 	       	 
