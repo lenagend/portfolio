@@ -57,7 +57,7 @@ location.replace("../home/goMain.html");
 
 <table>
 					<tr>
-						<td><div align="left" class="menu"><a id="novel_board" href="#novel_board">#연재 게시판</a></div></td>
+						<td><div align="left" class="menu"><a id="novel_board" href="../home/playBoard.html?pageNo=1">#연재 게시판</a></div></td>
 					</tr>
 					<tr>
 						<td>완결:<img alt="" src="../cssImage/redLink.png" width="16" height="16">&nbsp;
@@ -90,13 +90,14 @@ location.replace("../home/goMain.html");
 		</c:if>
 	</td>
 	<td>
+	
 	<table>
 		<c:forEach items="${NOVEL_LIST }" var="cnt">
 		
 			<tr>
 				
 				<td>
-					<img alt="" src="../upload/${cnt.image }" width="50"	height="75">
+					<img alt="" src="../upload/${cnt.image }" width="100"	height="150">
 				</td>
 				<td>
 					<table>

@@ -140,7 +140,7 @@ public class HomeController {
 		
 		}
 		PagingCondition c = new PagingCondition();
-		c.paging(cnt, pageNo, 10);
+		c.paging(cnt, pageNo, 5);
 
 		List<Novel> allNovelList;
 

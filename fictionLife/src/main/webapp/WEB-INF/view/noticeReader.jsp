@@ -10,7 +10,7 @@
 <body>
 <div>
 <span style="font-size: 200%;">#공지사항</span><br/>
-<textarea rows="20" cols="60" readonly="readonly">${notice.content }</textarea>
+<textarea style="font-size: 2em;" rows="40" cols="60" readonly="readonly">${notice.content }</textarea>
 
 </div>
 

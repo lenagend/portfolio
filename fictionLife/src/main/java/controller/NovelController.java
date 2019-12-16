@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -59,43 +60,45 @@ public class NovelController {
 			}
 			
 			Novel inputNovel = novel;
-
+			String uploadFolder = "/lenagend/tomcat/webapps/ROOT/upload/";
 			MultipartFile multiFile= inputNovel.getImageFile();
-			
-			String fileName=null; String path=null;
-			OutputStream os=null;
-			
-			
-				
-				fileName=multiFile.getOriginalFilename();
-				if(! fileName.equals("")) {
-				ServletContext ctx=session.getServletContext();
-				path=ctx.getRealPath("/home/hosting_users/lenagend/www/upload/"+fileName);
-				System.out.println("업로드경로:"+path);
-				try {
-					os=new FileOutputStream(path);
-					BufferedInputStream bis =
-						new BufferedInputStream(
-							multiFile.getInputStream());
-					byte[] buffer = new byte[8156];
-					int read = 0;
-					while( (read=bis.read(buffer))>0) {
-						os.write(buffer,0,read);
-					}
-					if(os != null) os.close();
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-				inputNovel.setImage(fileName);
-			}//작가가 표지를 선택한 경우
-			else {//기본표지
-				
-				inputNovel.setImage("basicImage.jpg");
+			File saveFile = new File(uploadFolder, multiFile.getOriginalFilename());
+			try {
+				multiFile.transferTo(saveFile);
+			}catch(Exception e) {
+				e.printStackTrace();
 			}
+			
+				
+//				fileName=multiFile.getOriginalFilename();
+//				if(! fileName.equals("")) {
+//				ServletContext ctx=session.getServletContext();
+//				path=ctx.getRealPath(UPLOADPATH+fileName);
+//				System.out.println("업로드경로:"+path);
+//				try {
+//					os=new FileOutputStream(path);
+//					BufferedInputStream bis =
+//						new BufferedInputStream(
+//							multiFile.getInputStream());
+//					byte[] buffer = new byte[8156];
+//					int read = 0;
+//					while( (read=bis.read(buffer))>0) {
+//						os.write(buffer,0,read);
+//					}
+//					if(os != null) os.close();
+//				}catch(Exception e) {
+//					e.printStackTrace();
+//				}
+//				inputNovel.setImage(fileName);
+//			}//작가가 표지를 선택한 경우
+//			else {//기본표지
+//				
+//				inputNovel.setImage("basicImage.jpg");
+//			}
 			
 			Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
 			inputNovel.setEmail(loginMember.getEmail());
-	
+			inputNovel.setImage( multiFile.getOriginalFilename());
 			
 			sn.insertNovel(inputNovel);
 			
@@ -260,7 +263,7 @@ public class NovelController {
 	
 	@RequestMapping(value="/novel/favorite.html")
 	@ResponseBody
-	public String favorite(HttpSession session, Integer novelId, String writer) {
+	public String favorite(HttpSession session, Integer novelId, String email) {
 
 		
 		Member loginuser = (Member)session.getAttribute("LOGINMEMBER");
@@ -280,7 +283,7 @@ public class NovelController {
 			sn.plusFavorite(novelId);
 			//작가 점수 올려주기(삭제했다 재등록하면서 점수 올리는것방지하기위해 검색후..블라인드에 예스되어있으면 하면 안됨-이건 나중에-)
 			PointCondition pc = new PointCondition();
-			pc.setPoint(1); pc.setEmail(writer);
+			pc.setPoint(5); pc.setEmail(email);
 			sm.AddW_point(pc);
 			
 			

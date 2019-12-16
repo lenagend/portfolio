@@ -72,7 +72,7 @@ $(document).ready(function() {
 					</form:select></td>
 			</tr>
 			<tr>
-				<td><form:textarea path="description" rows="5" cols="39" placeholder="작품설명" /></td>
+				<td><form:textarea path="description"  rows="10" cols="60" placeholder="작품설명" /></td>
 			</tr>
 			<tr>
 				<td><form:errors path="description" /></td>
