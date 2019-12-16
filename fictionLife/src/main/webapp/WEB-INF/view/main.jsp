@@ -74,10 +74,28 @@ color black;
 }
 
 </style>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#testBtn').click(function() {
+		$.ajax({
+	        type: "POST",
+	        url: "../test/vo.html",
+	      	dataType: 'json',
+	        success: function(json) {
+	        	
+	        	alert(json.name);
+	        }, error: function() {
+	            alert('오류');
+	        }
+
+	});
+	});
+});
+</script>
 </head>
 
 <body>
-
+<input type="button" id="testBtn" value="테스트">
 	<div data-role="page">	
 		<div data-role="header"> <!-- 로고, 로그인 메뉴 -->
 			<div align="center">

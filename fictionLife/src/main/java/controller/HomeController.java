@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import condition.EmailCondition;
 import condition.PagingCondition;
@@ -360,47 +363,53 @@ public class HomeController {
 	@ResponseBody
 	public String loadReply(Integer bno, Integer pageNo, HttpServletResponse response) {
 		
-		String result = "";
-		int amount = 30;
 		
-		
+		System.out.println("페이지넘버"+ pageNo);
+		System.out.println("페이지넘버"+ pageNo);
+		System.out.println("페이지넘버"+ pageNo);
+		System.out.println("페이지넘버"+ pageNo);
 		//댓글 불러오기
 
 		Integer cnt = sn.countReplyByBno(bno);
 		
 		PagingCondition c = new PagingCondition();
-		c.paging(cnt, pageNo, amount);c.setId(bno);
+		c.paging(cnt, pageNo, 10);c.setId(bno);
 		
 		List<Reply_novel> replyList = sn.getReplyList(c);
-		//각 닉네임으로 아이콘을 찾아와야한다...
-				if(replyList != null) {
-					Iterator it = replyList.iterator();
-					int i = 0;
-					while(it.hasNext()) {
-				
-						Reply_novel ci =(Reply_novel)it.next();
-						String r_icon_image= sm.getR_icon_ImageByEmail(ci.getEmail());  
-						ci.setMember(sm.checkEmail(ci.getEmail()));
-						result += "<table id='replTable'>";
-						result+="<tr>";
-						result+="<td bgcolor='#66ccff'>";
-						result+="<img src='../rank_icon/"+r_icon_image+"'width='32' height='32'>"+ci.getMember().getNickname()+ci.getRegi_date();
-						result+="</td>";
-						result+="<tr>";
-						result+="<td>";
-						result+=ci.getContent();
-						result+="</td>";
-						result+="</tr>";
-						result += "</table>";
-						result += "</br>";
+		Gson gson = new Gson();
+		
+		JsonArray array = new JsonArray();
+		// 각 닉네임으로 아이콘을 찾아와야한다...
+		if (replyList != null) {
+			Iterator it = replyList.iterator();
+			int i = 0;
+			while (it.hasNext()) {
+				JsonObject object = new JsonObject();
+				Reply_novel ci = (Reply_novel) it.next();
+				String r_icon_image = sm.getR_icon_ImageByEmail(ci.getEmail());
+				ci.setMember(sm.checkEmail(ci.getEmail()));
+				object.addProperty("nickname", ci.getMember().getNickname());
+				object.addProperty("regiDate", ci.getRegi_date());
+				object.addProperty("content", ci.getContent());
+				object.addProperty("iconImage", r_icon_image);
+				array.add(object);
 						i++;
 					}
 					
 					
 				}
+	
+		if(replyList.size()==10) {
+			JsonObject object = new JsonObject();
+			object.addProperty("endPage", "no");
+			array.add(object);
+		}
 			
 		
-		return result;
+		
+		String json = gson.toJson(array);
+		
+		return json;
 	}
 	
 	@RequestMapping(value="/home/loadReader.html")

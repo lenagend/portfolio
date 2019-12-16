@@ -35,6 +35,7 @@ width: 450px;
 <script type="text/javascript">
 $(document).ready(function() {
 	
+	var replPageNo = 1;
 	
 	//좋아요
 	$('#likeyBtn').click(function() {
@@ -83,24 +84,32 @@ $(document).ready(function() {
 	});//북마크
 
 	$("#replyForm").hide();
-	$("#moreRepl").click(function() {
+	$("#CallMoreRepl").click(function() {
+		replPageNo+1;
+		
 		$.ajax({
 	        type: "POST",
 	        url: "../home/loadReply.html",
 	        data:{"bno": $("#bno").val(),
-	        	"pageNo": 2
+	        	"pageNo": replPageNo.val(),
 	        	
 	       	 },
 	       	 
-	        success: function(result) {
-	        	$('#replySpace').append(result);
+	        success: function(json) {
+	        	$('#replySpace').append(replyList(json));
 	        	$("#replyForm").show();
+	        	if(json[10].endPage =='no'){
+	        		$("#CallMoreRepl").show();
+	        	}else{
+	        		$("#CallMoreRepl").hide();
+	        	}
 	        }, error: function() {
 	            alert('오류');
 	        }
 
 	});
 	});
+	$("#CallMoreRepl").hide();
 	//댓글페이지
 	$('#callReplPage').click(
 			function () {
@@ -110,10 +119,13 @@ $(document).ready(function() {
 			        data:{"bno": $("#bno").val()
 			        	
 			       	 },
-			       	
-			        success: function(result) {
-			        	$('#replySpace').html(result);
+			       	dataType:"json",
+			        success: function(json) {
+			        	$('#replySpace').html(replyList(json));
 			        	$("#replyForm").show();
+			        	if(json[10].endPage =='no'){
+			        		$("#CallMoreRepl").show();
+			        	}
 			        }, error: function() {
 			            alert('오류');
 			        }
@@ -147,7 +159,7 @@ $('#replyBtn').click(function() {
 				        data:{"bno": $("#bno").val()
 				       	 },
 				       	 
-				        success: function(result) {
+				        success: function(json) {
 				        	$('#replySpace').html(result);
 				        }, error: function() {
 				            alert('오류');
@@ -201,6 +213,28 @@ function reportResult(result) {
 		alert("이미 신고 한 글입니다");
 	}
 };
+
+function replyList(json){
+	var result = '';
+	
+	for(var i = 0; i<10; i++){		
+		result += "<table id='replTable'>";
+		result+="<tr>";
+		result+="<td bgcolor='#66ccff'>";
+		result+="<img src='../rank_icon/"+json[i].iconImage+"'width='32' height='32'>"+json[i].nickname+'&nbsp;'+json[i].regiDate;
+		result+="</td>";
+		result+="<tr>";
+		result+="<td>";
+		result+=json[i].content;
+		result+="</td>";
+		result+="</tr>";
+		result += "</table>";
+		result += "</br>";
+		
+	}
+	
+	return result;
+}
 
 
 </script>
@@ -265,6 +299,7 @@ function reportResult(result) {
 <div id="replySpace">
 <a id="callReplPage" style="font-size: 200%;">${COUNT }개의 댓글이 있습니다. #댓글보기</a>
 </div>
+<a id="CallMoreRepl" style="font-size: 200%">댓글 더보기</a>
 
 </body>
 </html>
