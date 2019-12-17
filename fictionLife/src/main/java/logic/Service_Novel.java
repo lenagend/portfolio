@@ -124,4 +124,7 @@ public interface Service_Novel {
 	
 	public Integer countReRe(Integer rno);
 	
+	public void addReplCntByRno(Integer rno);
+	
+	
 }

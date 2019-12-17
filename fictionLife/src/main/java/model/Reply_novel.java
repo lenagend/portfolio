@@ -22,7 +22,7 @@ public class Reply_novel {
 	private String blind;
 	private Integer r_point;
 	private Integer parent_no;
-	private Integer order_no;
+
 	private Integer repl_cnt;
 	private String email;
 	private Member member;
@@ -110,12 +110,7 @@ public class Reply_novel {
 	public void setParent_no(Integer parent_no) {
 		this.parent_no = parent_no;
 	}
-	public Integer getOrder_no() {
-		return order_no;
-	}
-	public void setOrder_no(Integer order_no) {
-		this.order_no = order_no;
-	}
+
 	
 	
 }

@@ -99,7 +99,9 @@ public interface NovelDao {
 	public Integer countReRe(Integer rno);
 
 	public void addReplCnt(Integer bno);
-
+	
+	public void addReplCntByRno(Integer rno);
+	
 	public Integer getOrder_no(Reply_novel rn);
 
 	public void addReplCnt2(Integer rno);

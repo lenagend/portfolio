@@ -85,6 +85,61 @@ public class ReplyController {
 	}
 	
 	
+	@RequestMapping(value="/reply/loadreReply.html")
+	public String loadreReply(Integer rno, Integer pageNo, HttpServletResponse response) {
+		
+		//댓글 불러오기
+
+		Integer cnt = sn.countReRe(rno);
+		
+		PagingCondition c = new PagingCondition();
+		c.paging(cnt, pageNo, 10);c.setId(rno);
+		
+		List<Reply_novel> replyList = sn.getReREply(c);
+		
+		Gson gson = new Gson();		
+		JsonArray array = new JsonArray();
+		// 각 닉네임으로 아이콘을 찾아와야한다...
+		if (replyList != null) {
+			Iterator it = replyList.iterator();
+			int i = 0;
+			while (it.hasNext()) {
+				JsonObject object = new JsonObject();
+				if(cnt > (c.getCurrentPage()*10)) {
+					object.addProperty("endPage", "no");
+					
+				}
+				else {
+				
+					object.addProperty("endPage", "yes");
+					
+				}
+				Reply_novel ci = (Reply_novel) it.next();
+				String r_icon_image = sm.getR_icon_ImageByEmail(ci.getEmail());
+				ci.setMember(sm.checkEmail(ci.getEmail()));
+				
+				object.addProperty("rno", ci.getRno());
+				object.addProperty("nickname", ci.getMember().getNickname());
+				object.addProperty("regiDate", ci.getRegi_date());
+				object.addProperty("content", ci.getContent());
+				object.addProperty("iconImage", r_icon_image);
+				object.addProperty("rereCnt", sn.countReRe(ci.getRno()));
+				object.addProperty("parentCnt", sn.countReRe(ci.getParent_no()));
+				array.add(object);
+						i++;
+					}
+					
+					
+				}
+	
+		
+		
+		String json = gson.toJson(array);
+		
+		return json;
+	}
+	
+	
 	@RequestMapping(value="/reply/reply.html")
 	public String reply(Integer bno, String reply, HttpSession session) {
 		
@@ -99,7 +154,7 @@ public class ReplyController {
 			rn.setContent(reply);
 			rn.setEmail(loginMember.getEmail());
 			rn.setParent_no(0);
-			rn.setOrder_no(0);
+			
 			
 			sn.insertReply(rn);
 			
@@ -119,6 +174,50 @@ public class ReplyController {
 	
 		
 	}
+	
+
+	@RequestMapping(value="/reply/reReply.html")
+	public String reReply(Integer bno, String reply,Integer parent_no, HttpSession session) {
+		System.out.println("패런트넘버: "+ parent_no);
+		System.out.println("패런트넘버: "+ parent_no);
+		System.out.println("패런트넘버: "+ parent_no);
+		System.out.println("패런트넘버: "+ parent_no);
+		System.out.println("패런트넘버: "+ parent_no);
+		//댓글인 경우
+		Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
+		Reply_novel rn = new Reply_novel();
+		
+	
+		try {
+		
+			rn.setBno(bno);
+			rn.setContent(reply);
+			rn.setEmail(loginMember.getEmail());
+			rn.setParent_no(parent_no);
+			
+			
+			sn.insertReply(rn);
+			
+			//novel_board 댓글카운트 1증가 이걸 rno로
+			sn.addReplCntByRno(parent_no);
+			
+			//r_point 1 증가
+			PointCondition pc = new PointCondition();
+			pc.setPoint(1); pc.setEmail(loginMember.getEmail());
+			sm.AddR_point(pc);
+			return "replSuc";
+		}catch(Exception e){
+			
+			return "replFail";
+			
+		}
+	
+
+	
+		
+	}
+	
+	
 //	
 //	@RequestMapping(value="/reply/reReply.html")
 //	public ModelAndView reReply(Integer epi_number, Integer pni, Integer bno, String reply, Integer parent_no,

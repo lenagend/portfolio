@@ -286,4 +286,9 @@ public class Service_Novel_impl implements Service_Novel {
 	public Integer countReRe(Integer rno) {
 		return nv.countReRe(rno);
 	}
+	
+	public void addReplCntByRno(Integer rno) {
+		nv.addReplCntByRno(rno);
+		
+	}
 }

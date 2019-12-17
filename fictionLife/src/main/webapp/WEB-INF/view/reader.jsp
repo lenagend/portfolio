@@ -213,12 +213,6 @@ function report() {
 	window.open(url, "_blank", "width=450, height=200, left="+popupX+",top="+popupY);
 };
 
-function reReplyForm(rno){
-	$(".reReplyForm").hide();
-	$("#"+rno).show();
-	
-};
-
 function deleteRepl(rno){
 	$("#replyForm").attr("action", "../reply/deleteReply.html");
 	$("#deleteRno").val(rno);
@@ -238,10 +232,10 @@ function replyList(json){
     var loginNick = '${LOGINMEMBER.nickname}';
 
 	for(var i=0, item; item=json[i]; i++){		
-		result += "<table id='replTable"+i+"'";
-		result += " class='replTable' style='font-size:1.5em;'>";
+		result += "<table id='replTable"+json[i].rno+"'";
+		result += " class='replTable' style='font-size:14px;'>";
 		result+="<tr>";
-		result+="<td bgcolor='#66ccff'>";
+		result+="<td >";
 		result+="<img src='../rank_icon/"+json[i].iconImage+"'width='32' height='32'/>"+json[i].nickname+'&nbsp;'+json[i].regiDate;
 	
 		if(loginNick == json[i].nickname && json[i].content != '삭제된 댓글입니다'){
@@ -256,8 +250,8 @@ function replyList(json){
 		result+="</td>";
 		result+="</tr>";
 		result+="<tr>";
-		result+="<td bgcolor='#b5c7ed'>";
-		result+="<a onClick='reReply(replTable"+i+");'>";
+		result+="<td>";
+		result+="<a id='reReLink"+json[i].rno+"' onClick='reReply(replTable"+json[i].rno+", "+json[i].rno+"); this.onclick=null;'>";
 		result+="답글 ";
 		result+=json[i].rereCnt;		
 		result+="</a>";
@@ -265,7 +259,6 @@ function replyList(json){
 		result+="</tr>";
 		result += "</table>";
 		result += "</br>";
-		
 	}
 	
 	return result;
@@ -317,7 +310,102 @@ function deleRepl(rno){
 	
 }
 
-function reReply() {
+function reReply(tableName, rno) {
+	
+	//테이블을 아이디로 불러오고
+	var replTable = tableName;
+	var parent_no = rno;
+		
+	//새로운행과 아이디 지정
+	var newTr = replTable.insertRow(replTable.rows.length);
+	newTr.id = "newTr" + replTable.rows.length;
+	
+	var newTr2 = replTable.insertRow(replTable.rows.length);
+	newTr2.id = "newTr2" + replTable.rows.length;
+	
+	var newTd = newTr.insertCell(0);
+	var newTd2 = newTr2.insertCell(0);
+	newTd2.id = "newTd2_" +parent_no;
+	
+	var reReForm = "<form method='post'><table><tr><td><textarea row='3' cols='60' id='reReply"+parent_no+"' placeholder='댓글 입력...'></textarea> ";
+	reReForm += "</td></tr><tr><td><input type='button' value='확인' onClick='insertReReply("+parent_no+");'/> </td></tr></table></form> "
+	newTd.innerHTML = reReForm;
+	
+	//여기서 대댓글목록을 불러와야한다
+	//댓글페이지
+	
+			
+				$.ajax({
+			        type: "POST",
+			        url: "../reply/loadreReply.html",
+			        data:{"rno":parent_no
+			        	
+			       	 },
+			       	dataType:"json",
+			        success: function(json) {
+			        	
+			        	newTd2.innerHTML = replyList(json);
+			        }, error: function() {
+			            alert('오류');
+			        }
+
+			});
+				
+		
+	//댓글페이지
+	
+};
+
+function insertReReply(parent_no) {
+	var rereTd = document.getElementById("newTd2_"+parent_no);
+	//댓글링크의 답글수를 새로 변환해야됨
+	var replLink = document.getElementById("reReLink"+parent_no);
+	
+	if(${sessionScope.LOGINMEMBER == null}){
+		alert("로그인 해야 합니다");
+	}
+	else if($('#reReply'+parent_no).val()==''){
+		alert("댓글 내용을 입력하지 않았습니다");
+	}else{
+		$.ajax({
+            type: "POST",
+            url: "../reply/reReply.html",
+            data:{"bno": $("#bno").val(),
+           	 "reply": $("#reReply"+parent_no).val(),
+           	 "parent_no": parent_no
+           	},
+            success: function(result) {
+         		if(result = 'replSuc'){
+         			  $.ajax({
+        			        type: "POST",
+        			        url: "../reply/loadreReply.html",
+        			        data:{"rno":parent_no
+        			        	
+        			       	 },
+        			       	dataType:"json",
+        			        success: function(json) {
+        			        	//답글수도 새로받아와야되는데...
+        			        	replLink.innerHTML ="답글 "+ json[0].parentCnt;
+        			        	rereTd.innerHTML = replyList(json);
+        			        
+        			        }, error: function() {
+        			            alert('오류');
+        			        }
+
+        			});
+         		}
+             
+         		
+         		else
+         		alert("댓글달기실패");
+               
+            }, error: function() {
+                alert('오류');
+            }
+
+	});
+		 
+	}
 	
 }
 

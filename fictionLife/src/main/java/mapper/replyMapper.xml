@@ -4,8 +4,8 @@
 <mapper namespace="mapper.replyMapper">
 
 <insert id="insertReply">
-insert into reply_novel(bno, content, email, parent_no, order_no)
- values(#{bno},#{content},#{email} ,#{parent_no},#{order_no})
+insert into reply_novel(bno, content, email, parent_no)
+ values(#{bno},#{content},#{email} ,#{parent_no})
 </insert>
 
 <update id="addReplCnt">
@@ -29,6 +29,18 @@ update reply_novel set content = #{content} where rno=#{rno}
 <select id="countReRe" resultType="Integer">
 SELECT COUNT(*) FROM reply_novel WHERE parent_no = #{rno}
 </select>
+
+<select id="getReREply" resultType="model.Reply_novel">
+
+select * from reply_novel where parent_no = #{id} order by rno desc LIMIT #{startRow},#{endRow}
+
+</select>
+
+<update id="addReplCntByRno">
+update reply_novel set repl_cnt = repl_cnt+1 where rno=#{rno}
+</update>
+
+
 
 </mapper>
 
