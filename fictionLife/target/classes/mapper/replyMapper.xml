@@ -26,6 +26,10 @@ select * from reply_novel where bno=#{id} and parent_no = 0 order by rno desc LI
 update reply_novel set content = #{content} where rno=#{rno}
 </update>
 
+<select id="countReRe" resultType="Integer">
+SELECT COUNT(*) FROM reply_novel WHERE parent_no = #{rno}
+</select>
+
 </mapper>
 
 

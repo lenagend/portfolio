@@ -279,4 +279,9 @@ public class NovelDaoImpl implements NovelDao {
 		
 		return session.selectList("mapper.novelMapper.getSearchNovel",pc);
 	}
+	
+	public Integer countReRe(Integer rno) {
+	
+		return session.selectOne("mapper.replyMapper.countReRe", rno);
+	}
 }

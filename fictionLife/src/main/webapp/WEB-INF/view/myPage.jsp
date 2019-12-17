@@ -227,8 +227,9 @@ color: #cc0000;
 
 
 <c:if test="${CONTENTNAME == 'MYNOVEL' }">
-<span style="font-size: 200%">#내 작품</span>
+
 <div id="my">
+<span style="font-size: 200%">#내 작품</span>
 <c:if test="${empty NOVEL_LIST }">
 <a style="font-size: 200%; margin-top: 30%" href="../home/loadRegiNovel.html">#작품이 없습니다 새로 작품을 동록하세요</a>
 </c:if>
@@ -339,8 +340,9 @@ color: #cc0000;
 
 
 <c:if test="${CONTENTNAME == 'modifyForm'}">
-<span style="font-size: 200%">#개인정보 수정</span>
+
 <div id="loginFormDiv">
+<span style="font-size: 200%">#개인정보 수정</span>
 		<form:form id="modifyForm" modelAttribute="member" action="../login/doMemberModify.html" method="post">
 			
 			<table>

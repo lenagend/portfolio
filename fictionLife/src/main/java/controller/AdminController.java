@@ -136,16 +136,16 @@ public class AdminController {
 //		return mav;
 //	};
 //	
-//	@RequestMapping(value="/admin/loadReportReader.html")
-//	public ModelAndView loadNoticeReader(String content,  Integer novelId, Integer epi, Integer bno  ) {
-//		
-//		ModelAndView mav = new ModelAndView("main");
-//		mav.addObject("BODY", "reportReader.jsp");
-//		mav.addObject("content", content);
-//		mav.addObject("novelId", novelId);
-//		mav.addObject("epi", epi);
-//		mav.addObject("bno", bno);
-//		return mav;
-//		
-//	}
+	@RequestMapping(value="/admin/loadReportReader.html")
+	public ModelAndView loadNoticeReader(String content,  Integer novelId, Integer epi, Integer bno  ) {
+		
+		ModelAndView mav = new ModelAndView("main");
+		mav.addObject("BODY", "reportReader.jsp");
+		mav.addObject("content", content);
+		mav.addObject("novelId", novelId);
+		mav.addObject("epi", epi);
+		mav.addObject("bno", bno);
+		return mav;
+		
+	}
 }

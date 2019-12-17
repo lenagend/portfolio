@@ -95,6 +95,8 @@ public interface NovelDao {
 	public List<Reply_novel> getReplyByBno(PagingCondition pc);
 
 	public Integer countReplyByBno(Integer bno);
+	
+	public Integer countReRe(Integer rno);
 
 	public void addReplCnt(Integer bno);
 

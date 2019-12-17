@@ -282,4 +282,8 @@ public class Service_Novel_impl implements Service_Novel {
 		// TODO Auto-generated method stub
 		return nv.getSearchNovel(pc);
 	}
+	
+	public Integer countReRe(Integer rno) {
+		return nv.countReRe(rno);
+	}
 }

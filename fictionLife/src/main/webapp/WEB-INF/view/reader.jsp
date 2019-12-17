@@ -22,7 +22,7 @@
   		
 }
 
-#replTable{
+.replTable{
 border: 1px solid black;
 width: 500px;
 
@@ -31,6 +31,14 @@ width: 500px;
 border: 1px solid black;
 width: 450px;
 }
+
+#pageRemocon{
+ position:   fixed;
+    right:       15%;
+    bottom:     0;
+	border: 1px solid #0099ff;
+}
+
 </style>
 <script type="text/javascript">
 var replPageNo = 1;
@@ -70,7 +78,10 @@ $(document).ready(function() {
            	 "email": $("#email").val()},
             success: function(result) {
            	 if(result == 'favoSuc'){
-           		 alert('관심목록에 추가되었습니다'); 
+           		 var movePage = confirm("관심목록에 추가되었습니다, 마이페이지로 이동하시겠습니까?");
+	       		 if(movePage == true){
+	       			 location.replace("../home/loadMyPage2.html");
+	       		 }
            	 }else if (result == 'favoFail'){
            		 alert('이미 관심목록에 있습니다');
            	 }
@@ -90,7 +101,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 	        type: "POST",
-	        url: "../home/loadReply.html",
+	        url: "../reply/loadReply.html",
 	        data:{"bno": $("#bno").val(),
 	        	"pageNo": replPageNo,
 	        	
@@ -117,7 +128,7 @@ $(document).ready(function() {
 			function () {
 				$.ajax({
 			        type: "POST",
-			        url: "../home/loadReply.html",
+			        url: "../reply/loadReply.html",
 			        data:{"bno": $("#bno").val()
 			        	
 			       	 },
@@ -158,7 +169,7 @@ $('#replyBtn').click(function() {
 	           		$('#replySpace').empty();
 	           		$.ajax({
 				        type: "POST",
-				        url: "../home/loadReply.html",
+				        url: "../reply/loadReply.html",
 				        data:{"bno": $("#bno").val()
 				        	
 				       	 },
@@ -189,6 +200,7 @@ $('#replyBtn').click(function() {
 		
 	});//댓글
 
+	
 });
 
 function report() {
@@ -226,7 +238,8 @@ function replyList(json){
     var loginNick = '${LOGINMEMBER.nickname}';
 
 	for(var i=0, item; item=json[i]; i++){		
-		result += "<table id='replTable' style='font-size:1.5em;'>";
+		result += "<table id='replTable"+i+"'";
+		result += " class='replTable' style='font-size:1.5em;'>";
 		result+="<tr>";
 		result+="<td bgcolor='#66ccff'>";
 		result+="<img src='../rank_icon/"+json[i].iconImage+"'width='32' height='32'/>"+json[i].nickname+'&nbsp;'+json[i].regiDate;
@@ -240,6 +253,14 @@ function replyList(json){
 		result+="<tr>";
 		result+="<td>";
 		result+=json[i].content;
+		result+="</td>";
+		result+="</tr>";
+		result+="<tr>";
+		result+="<td bgcolor='#b5c7ed'>";
+		result+="<a onClick='reReply(replTable"+i+");'>";
+		result+="답글 ";
+		result+=json[i].rereCnt;		
+		result+="</a>";
 		result+="</td>";
 		result+="</tr>";
 		result += "</table>";
@@ -266,7 +287,7 @@ function deleRepl(rno){
        		$('#replySpace').empty();
        		$.ajax({
 		        type: "POST",
-		        url: "../home/loadReply.html",
+		        url: "../reply/loadReply.html",
 		        data:{"bno": $("#bno").val()
 		        	
 		       	 },
@@ -295,6 +316,11 @@ function deleRepl(rno){
 });
 	
 }
+
+function reReply() {
+	
+}
+
 </script>
 </head>
 <body>
@@ -359,5 +385,8 @@ function deleRepl(rno){
 </div>
 <a id="CallMoreRepl" style="font-size: 200%">댓글 더보기</a>
 
+<div id="pageRemocon">
+<button onclick="location.href='#page_first'"> ↑ </button>&nbsp;<button onclick="location.href='#page_end'"> ↓ </button>
+</div>
 </body>
 </html>
