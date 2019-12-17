@@ -122,4 +122,6 @@ public interface Service_Novel {
 
 	public List<Novel> getSearchNovel(PagingCondition pc);
 	
+	public Integer countReRe(Integer rno);
+	
 }

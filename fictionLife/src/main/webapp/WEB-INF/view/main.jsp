@@ -17,7 +17,7 @@
 <style type="text/css">
 .text_link{
 font-size: 150%;
-
+margin-left: auto; margin-right: auto;
 
 }
 .menu{
@@ -33,7 +33,7 @@ color black;
 }
 
 #div_notice{
- 		 width:510px;
+ 		 width:100%;
 	    height:100%;
 	    margin-top: 2%;
 	    
@@ -43,13 +43,13 @@ color black;
   		background-repeat: no-repeat;
   		padding-left:5%;
   		padding-right:5%;
-  		border: 1px solid black;
+  		
   		padding-right: 1px;
 
 }
 
 .imageContents{
-		 width:510px;
+		 width:100%;
 	    height:100%;
 	    margin-top:2%;
 	    
@@ -57,8 +57,7 @@ color black;
   		padding-bottom:  none;
   		font-family: "Nanum Gothic", arial, helvetica, sans-serif;
   		background-repeat: no-repeat;
-  		
-  		border: 1px solid black;
+  	
 }
 
 </style>
@@ -133,7 +132,7 @@ color black;
 								
 								<td>
 								<a href="../home/loadSeries.html?novelId=${top.id }">
-								<img alt="" src="../upload/${top.image }" width="100" height="150"  >
+								<img alt="" src="../upload/${top.image }" width="150" height="225"  >
 								</a>
 								</td>
 								
@@ -167,7 +166,7 @@ color black;
 								<c:forEach items="${TOP10_LIST }" var="top2">
 								<td>
 								<a href="../home/loadSeries.html?novelId=${top2.id }">
-								<img alt="" src="../upload/${top2.image }" width="100" height="150"  ></a>
+								<img alt="" src="../upload/${top2.image }" width="150" height="225"  ></a>
 								</td>
 								</c:forEach>
 								</tr>
@@ -182,14 +181,14 @@ color black;
 			<div id="div_notice">
 			<div align="left">
 			<c:if test="${empty NOTICE_LIST }">
-			<div class="menu"><a id="noticeList" href="#noticeList">#공지사항</a></div>
+			<div class="menu"><a id="noticeList" href="../home/loadNotice.html">#공지사항</a></div>
 			등록된 공지가 없습니다
 			</c:if>
 			<c:if test="${! empty NOTICE_LIST }">			
-			<table class="table table-striped" >
+			<table style="width:700px; margin-left: auto; margin-right: auto;" class="table table-striped" >
 			<thead>
 				<tr>
-					<td><div class="menu"><a id="noticeList" href="#noticeList">#공지사항</a></div></td>
+					<td><div class="menu"><a id="noticeList" href="../home/loadNotice.html">#공지사항</a></div></td>
 				</tr>
 				<tr>
 					<th>제목</th><th>작성자</th><th>작성일</th>
@@ -206,7 +205,7 @@ color black;
 				</c:forEach>
 			</tbody>
 			</table>
-			<div align="left" class="text_link"><a href="../home/loadNotice.html">more...</a></div>
+			
 			</c:if>
 			</div>
 			</div>
@@ -224,7 +223,7 @@ color black;
 		
 		</div>
 		
-		<div data-role="footer">
+		<div data-role="footer" id="page_end">
 		<div align="center" style="margin-top: 10%">
 			
 			<img alt="" src="../cssImage/footer.png">

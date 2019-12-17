@@ -35,6 +35,40 @@ font-size: 300%;
 
 }
 </style>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	//북마크
+	$('#favoriteLink').click(function() {
+		
+		$.ajax({
+	        type: "POST",
+	        url: "../novel/favorite.html",
+	        data:{"novelId": '${parentNovel.id }',
+	       	 "email": '${parentNovel.email}'},
+	        success: function(result) {
+	       	 if(result == 'favoSuc'){
+	       		 var movePage = confirm("관심목록에 추가되었습니다, 마이페이지로 이동하시겠습니까?");
+	       		 if(movePage == true){
+	       			 location.replace("../home/loadMyPage2.html");
+	       		 }
+	       		
+	       	 }else if (result == 'favoFail'){
+	       		 alert('이미 관심목록에 있습니다');
+	       	 }
+	           
+	           
+	        }, error: function() {
+	            alert('오류');
+	        }
+
+	});
+		
+	});//북마크
+});
+
+</script>
 </head>
 <body>
 
@@ -52,7 +86,7 @@ font-size: 300%;
 		<c:if test="${parentNovel.finish=='no' }"><span style="color: #cc0000;">미완!!</span></c:if>
 		<br/>
 		<c:if test="${sessionScope.LOGINMEMBER != null }">
-		<a href="../novel/favorite.html?novelId=${parentNovel.id }&writer=${parentNovel.email}">선호작 등록</a>
+		<a id="favoriteLink">관심작품 등록</a>
 		</c:if>
 		<br/>
 		글 : <strong>${parentNovel.member.nickname }</strong><br/>
@@ -84,14 +118,14 @@ font-size: 300%;
 						<a href="../home/loadSeries.html?pageNo=${currentPage -1 }&novelId=${parentNovel.id }"><img alt="" src="../cssImage/prev.png" width="32" height="32"></a>
 					</c:if></td>
 				<td>
-					<table>
+					<table >
 					
 						<c:forEach var="epi" items="${EPI_LIST }">
 
 
-							<tr>
+							<tr style="font-size: 1.5em;">
 								<td>${epi.epi_number }화-</td>
-								<td><font size="6"><a href="../home/loadReader.html?epi_number=${epi.epi_number }&bno=${epi.bno}">${epi.epi_title }</a></font></td>
+								<td><font size="6"><a href="../home/loadReader.html?epi_number=${epi.epi_number }&bno=${epi.bno}&pni=${parentNovel.id}">${epi.epi_title }</a></font></td>
 								<td><img alt="" src="../cssImage/view.jpg" width="16" height="16"> ${epi.view_cnt } </td>
 								<td><img alt="" src="../cssImage/likey.png" width="16" height="16">${epi.reco_cnt } </td>
 								<td><img alt="" src="../cssImage/comment.png" width="16" height="16">${epi.repl_cnt }</td>

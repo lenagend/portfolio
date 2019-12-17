@@ -1,20 +1,28 @@
 package controller;
 
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import condition.PagingCondition;
 import condition.PointCondition;
 import logic.Service_Member;
 import logic.Service_Novel;
 import model.Member;
 import model.Reply_novel;
 
-@Controller
+@RestController
 public class ReplyController {
 	@Autowired
 	private Service_Novel sn;
@@ -22,8 +30,62 @@ public class ReplyController {
 	@Autowired
 	private Service_Member sm;
 	
+	@RequestMapping(value="/reply/loadReply.html")
+	public String loadReply(Integer bno, Integer pageNo, HttpServletResponse response) {
+		
+		//댓글 불러오기
+
+		Integer cnt = sn.countReplyByBno(bno);
+		
+		PagingCondition c = new PagingCondition();
+		c.paging(cnt, pageNo, 10);c.setId(bno);
+		
+		List<Reply_novel> replyList = sn.getReplyList(c);
+		System.out.println("List사이즈 : "+replyList.size());
+		Gson gson = new Gson();
+		
+		JsonArray array = new JsonArray();
+		// 각 닉네임으로 아이콘을 찾아와야한다...
+		if (replyList != null) {
+			Iterator it = replyList.iterator();
+			int i = 0;
+			while (it.hasNext()) {
+				JsonObject object = new JsonObject();
+				if(cnt > (c.getCurrentPage()*10)) {
+					object.addProperty("endPage", "no");
+					
+				}
+				else {
+				
+					object.addProperty("endPage", "yes");
+					
+				}
+				Reply_novel ci = (Reply_novel) it.next();
+				String r_icon_image = sm.getR_icon_ImageByEmail(ci.getEmail());
+				ci.setMember(sm.checkEmail(ci.getEmail()));
+				
+				object.addProperty("rno", ci.getRno());
+				object.addProperty("nickname", ci.getMember().getNickname());
+				object.addProperty("regiDate", ci.getRegi_date());
+				object.addProperty("content", ci.getContent());
+				object.addProperty("iconImage", r_icon_image);
+				object.addProperty("rereCnt", sn.countReRe(ci.getRno()));
+				array.add(object);
+						i++;
+					}
+					
+					
+				}
+	
+		
+		
+		String json = gson.toJson(array);
+		
+		return json;
+	}
+	
+	
 	@RequestMapping(value="/reply/reply.html")
-	@ResponseBody
 	public String reply(Integer bno, String reply, HttpSession session) {
 		
 		//댓글인 경우

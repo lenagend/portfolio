@@ -29,7 +29,7 @@ color: #cc0000;
 
 #div_playBoard{
 
- 		  width:510px;
+ 		  width:100%;
 	    height:100%;
 	    margin-top:2%;
 	   
@@ -38,7 +38,7 @@ color: #cc0000;
   		font-family: "Nanum Gothic", arial, helvetica, sans-serif;
   		background-repeat: no-repeat;
   		
-  		border: 1px solid black;
+  		
 }
 
 </style>
@@ -91,7 +91,7 @@ location.replace("../home/goMain.html");
 	</td>
 	<td>
 	
-	<table>
+	<table style="width:700px; margin-left: auto; margin-right: auto;">
 		<c:forEach items="${NOVEL_LIST }" var="cnt">
 		
 			<tr>

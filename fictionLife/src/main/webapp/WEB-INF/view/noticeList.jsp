@@ -14,7 +14,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <style type="text/css">
 #div_notice{
- 		width:510px;
+ 		width:100%;
 	    height:100%;
 	    margin-top: none;
 	    margin-bottom:3%;
@@ -47,7 +47,7 @@
 
 			
 	
-					<table class="table table-striped" >
+					<table style="width:700px; margin-left: auto; margin-right: auto;" class="table table-striped" >
 					<tr>
 						<th>글 번호</th>
 						<th>제목</th>
