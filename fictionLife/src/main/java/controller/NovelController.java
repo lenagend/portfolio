@@ -68,33 +68,8 @@ public class NovelController {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			
-				
-//				fileName=multiFile.getOriginalFilename();
-//				if(! fileName.equals("")) {
-//				ServletContext ctx=session.getServletContext();
-//				path=ctx.getRealPath(UPLOADPATH+fileName);
-//				System.out.println("업로드경로:"+path);
-//				try {
-//					os=new FileOutputStream(path);
-//					BufferedInputStream bis =
-//						new BufferedInputStream(
-//							multiFile.getInputStream());
-//					byte[] buffer = new byte[8156];
-//					int read = 0;
-//					while( (read=bis.read(buffer))>0) {
-//						os.write(buffer,0,read);
-//					}
-//					if(os != null) os.close();
-//				}catch(Exception e) {
-//					e.printStackTrace();
-//				}
-//				inputNovel.setImage(fileName);
-//			}//작가가 표지를 선택한 경우
-//			else {//기본표지
-//				
-//				inputNovel.setImage("basicImage.jpg");
-//			}
+
+			//선택안했을경우 기본표지로 하는처리해야한다
 			
 			Member loginMember = (Member)session.getAttribute("LOGINMEMBER");
 			inputNovel.setEmail(loginMember.getEmail());
@@ -131,36 +106,18 @@ public class NovelController {
 			}
 			
 			
-
-			MultipartFile multiFile= novel.getImageFile();
-			
-			String fileName=null; String path=null;
-			OutputStream os=null;
-			
+			Novel inputNovel = novel;
+			String uploadFolder = "/lenagend/tomcat/webapps/ROOT/upload/";
+			MultipartFile multiFile= inputNovel.getImageFile();
+			File saveFile = new File(uploadFolder, multiFile.getOriginalFilename());
+			try {
+				multiFile.transferTo(saveFile);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 			
 				
-				fileName=multiFile.getOriginalFilename();
-				if(! fileName.equals("")) {
-				ServletContext ctx=session.getServletContext();
-				path=ctx.getRealPath("/upload/"+fileName);
-				System.out.println("업로드경로:"+path);
-				try {
-					os=new FileOutputStream(path);
-					BufferedInputStream bis =
-						new BufferedInputStream(
-							multiFile.getInputStream());
-					byte[] buffer = new byte[8156];
-					int read = 0;
-					while( (read=bis.read(buffer))>0) {
-						os.write(buffer,0,read);
-					}
-					if(os != null) os.close();
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-				novel.setImage(fileName);
-			}//작가가 표지를 선택한 경우
-			
+			inputNovel.setImage( multiFile.getOriginalFilename());
 			sn.modifyNovel(novel);
 			mav.setViewName("modiResultPage");
 		
@@ -386,7 +343,15 @@ public class NovelController {
 	}
 
 	
-
+	@RequestMapping(value="/novel/getReco.html")
+	@ResponseBody
+	public String getReco_cnt(Integer bno) {
+		
+		
+		
+		String result = sn.getRecoCnt(bno)+"";
+		return result;
+	}
 	
 	
 	

@@ -109,33 +109,33 @@ public class AdminController {
 		return mav;
 	};
 	
-//	
-//	@RequestMapping(value="/admin/loadModifyNoticeForm.html")
-//	public ModelAndView loadModifyNoticeForm(Integer bno, String title, String content) {
-//		ModelAndView mav = new ModelAndView("main");
-//		
-//		mav.addObject("bno",bno);
-//		mav.addObject("title",title);
-//		mav.addObject("content", content);
-//		mav.addObject("BODY", "modifyNoticeForm.jsp");
-//		
-//		
-//		return mav;
-//	};
-//	
-//	@RequestMapping(value="/admin/modifyNotice.html")
-//	public ModelAndView modifyNotice(Integer bno, String title, String content) {
-//		ModelAndView mav = new ModelAndView("blindResult");
-//		Notice_board nb = new Notice_board(); 
-//		
-//		nb.setBno(bno);
-//		nb.setTitle(title);
-//		nb.setContent(content);
-//		sa.modifyNotice(nb);
-//		mav.addObject("modify", "OK");
-//		return mav;
-//	};
-//	
+	
+	@RequestMapping(value="/admin/loadModifyNoticeForm.html")
+	public ModelAndView loadModifyNoticeForm(Integer bno, String title, String content) {
+		ModelAndView mav = new ModelAndView("main");
+		
+		mav.addObject("bno",bno);
+		mav.addObject("title",title);
+		mav.addObject("content", content);
+		mav.addObject("BODY", "modifyNoticeForm.jsp");
+		
+		
+		return mav;
+	};
+	
+	@RequestMapping(value="/admin/modifyNotice.html")
+	public ModelAndView modifyNotice(Integer bno, String title, String content) {
+		ModelAndView mav = new ModelAndView("blindResult");
+		Notice_board nb = new Notice_board(); 
+		
+		nb.setBno(bno);
+		nb.setTitle(title);
+		nb.setContent(content);
+		sa.modifyNotice(nb);
+		mav.addObject("modify", "OK");
+		return mav;
+	};
+	
 	@RequestMapping(value="/admin/loadReportReader.html")
 	public ModelAndView loadNoticeReader(String content,  Integer novelId, Integer epi, Integer bno  ) {
 		

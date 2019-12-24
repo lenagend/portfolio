@@ -60,6 +60,15 @@ update member set blind = 'no' where nickname=#{value}
 <update id="novelBlind2">
 update novel set blind = 'no' where id=#{value}
 </update>
+
+<update id="modifyNotice">
+update notice_board set title = #{title}, content=#{content} where bno=#{bno}
+</update>
+
+<update id="deleteNotice">
+update notice_board set blind = 'yes' where bno=#{value}
+</update>
+
 </mapper>
 
 

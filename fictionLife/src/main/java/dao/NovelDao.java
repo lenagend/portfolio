@@ -123,6 +123,7 @@ public interface NovelDao {
 	
 	public List<Novel> getSearchNovel(PagingCondition pc);
 	
+	public Integer getRecoCnt(Integer bno);
 	
 	
 	

@@ -288,4 +288,9 @@ public class NovelDaoImpl implements NovelDao {
 	session.update("mapper.replyMapper.addReplCntByRno", rno);
 		
 	}
+	
+	public Integer getRecoCnt(Integer bno) {
+		
+		return session.selectOne("mapper.novelMapper.getRecoCnt",bno);
+	}
 }

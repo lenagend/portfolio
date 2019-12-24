@@ -243,6 +243,9 @@ insert into report_novel(email, r_bno, title, content, novel_id, epi)
  values(#{email},#{r_bno},#{title},#{content}, #{novel_id}, #{epi})
 </insert>
 
+<select id="getRecoCnt" resultType="Integer">
+select reco_cnt from novel_board where bno =#{bno}
+</select>
 
 </mapper>
 

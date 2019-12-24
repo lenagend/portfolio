@@ -126,5 +126,5 @@ public interface Service_Novel {
 	
 	public void addReplCntByRno(Integer rno);
 	
-	
+	public Integer getRecoCnt(Integer bno);
 }

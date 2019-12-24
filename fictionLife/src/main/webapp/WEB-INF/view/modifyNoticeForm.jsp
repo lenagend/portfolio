@@ -8,7 +8,7 @@
 <style type="text/css">
 
 #loginFormDiv{
-   width:510px;
+   width:700px;
 	    height:100%;
 	    margin-top:5%;
 	   margin-bottom: 0%;
@@ -22,7 +22,7 @@
 
 .input{
 
-  width:300px;
+  width:400px;
   height:50px;
   font-size:150%;
   font-family: Malgun Gothic;
@@ -46,7 +46,7 @@
 <span style="font-size: 200%;">#공지번호: ${bno } 번글 수정</span><br/>
 <input class="input" type="hidden" name="bno" value="${bno }"><br/>
 <input class="input" type="text" name="title" value="${title }"><br/>
-<textarea rows="10" cols="60" name="content">${content }</textarea>
+<textarea rows="30" cols="80" name="content">${content }</textarea>
 <input class="button" type="submit" value="수정">
 </form>
 </div>

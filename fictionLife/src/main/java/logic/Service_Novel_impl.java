@@ -291,4 +291,9 @@ public class Service_Novel_impl implements Service_Novel {
 		nv.addReplCntByRno(rno);
 		
 	}
+	
+	public Integer getRecoCnt(Integer bno) {
+	
+		return nv.getRecoCnt(bno);
+	}
 }

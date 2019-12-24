@@ -57,6 +57,15 @@ $(document).ready(function() {
              success: function(result) {
             	 if(result == 'suc'){
             		 alert('추천되었습니다'); 
+            		 $.ajax({
+            			 type:"POST",
+            			 url:"../novel/getReco.html",
+            			 data:{"bno": $("#bno").val()},
+            			 success: function(result){
+            				 $("#recoCnt").html("추천수: "+result);
+            			 }
+            			 
+            		 });
             	 }else if (result == 'fail'){
             		 alert('이미 추천 했습니다');
             	 }
@@ -166,7 +175,7 @@ $('#replyBtn').click(function() {
 	           	 if(result == 'replSuc'){
 	           		replPageNo =1;
 	           		$('#reply').val('');
-	           		$('#replySpace').empty();
+	           		
 	           		$.ajax({
 				        type: "POST",
 				        url: "../reply/loadReply.html",
@@ -441,7 +450,11 @@ function insertReReply(parent_no) {
 			<textarea style="font-size: 1.5em;" autofocus="autofocus" cols="80" rows="100" readonly="readonly">${EPISODE.content }</textarea>
 	</td>
 	</tr>
-	
+	<tr>
+	<td>
+	<div id="recoCnt">추천수:${EPISODE.reco_cnt }</div>
+	</td>
+	</tr>
 	<tr>
 	<td>	
 	<c:if test="${sessionScope.LOGINMEMBER != null }"><!-- 로그인 유저만 -->
